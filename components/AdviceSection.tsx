@@ -136,3 +136,4 @@ const AdviceSection = ({ currentLang }: AdviceSectionProps) => {
 
 export default AdviceSection
 
+

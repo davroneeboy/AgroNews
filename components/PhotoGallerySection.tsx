@@ -184,3 +184,4 @@ const PhotoGallerySection = ({ currentLang }: PhotoGallerySectionProps) => {
 
 export default PhotoGallerySection
 
+

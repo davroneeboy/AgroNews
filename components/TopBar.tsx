@@ -105,3 +105,4 @@ const TopBar = ({ currentLang }: TopBarProps) => {
 
 export default TopBar
 
+

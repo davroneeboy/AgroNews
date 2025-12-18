@@ -76,3 +76,4 @@ export const revalidate = 3600 // Кэш на 1 час
 ⚠️ **Важно**: Никогда не коммитьте `.env.local` в git!
 Файл уже добавлен в `.gitignore`.
 
+
