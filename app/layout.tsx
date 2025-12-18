@@ -7,6 +7,11 @@ const inter = Inter({ subsets: ['latin', 'cyrillic'] })
 export const metadata: Metadata = {
   title: 'Агентство по развитию агропромышленности при Министерстве сельского хозяйства',
   description: 'Официальный сайт агентства по развитию агропромышленности при Министерстве сельского хозяйства',
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
 }
 
 export default function RootLayout({

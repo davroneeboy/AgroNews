@@ -27,10 +27,17 @@ export const getYouTubeVideos = async (): Promise<YouTubeVideo[]> => {
     })
 
     if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      console.error('YouTube API HTTP error:', response.status, errorData)
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
     const data = await response.json()
+    
+    if (data.error) {
+      console.warn('YouTube API error:', data.error)
+    }
+    
     return data.videos || []
   } catch (error) {
     console.error('Error fetching YouTube videos:', error)
