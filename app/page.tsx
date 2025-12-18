@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Header from '@/components/Header'
-import ImageSlider from '@/components/ImageSlider'
 import NewsSection from '@/components/NewsSection'
 import VideoReportsSection from '@/components/VideoReportsSection'
 import StatisticsSection from '@/components/StatisticsSection'
@@ -26,7 +25,6 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Header currentLang={currentLang} onLanguageChange={handleLanguageChange} />
-      <ImageSlider currentLang={currentLang} />
       <StatisticsSection currentLang={currentLang} />
       <InteractiveMap currentLang={currentLang} />
       <NewsSection currentLang={currentLang} />

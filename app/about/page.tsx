@@ -1,90 +1,212 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingButtons from '@/components/FloatingButtons'
+import PageHeader from '@/components/PageHeader'
+import ScrollReveal from '@/components/ScrollReveal'
 import { Language, getTranslation } from '@/lib/i18n'
+import { getAboutList, type About } from '@/lib/api-public'
 import Image from 'next/image'
 
 export default function AboutPage() {
   const [currentLang, setCurrentLang] = useState<Language>('ru')
+  const [aboutData, setAboutData] = useState<About | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const t = getTranslation(currentLang)
+
+  useEffect(() => {
+    async function fetchAbout() {
+      try {
+        setLoading(true)
+        setError(null)
+        const response = await getAboutList()
+        if (response.results.length > 0) {
+          setAboutData(response.results[0])
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Ошибка загрузки данных')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchAbout()
+  }, [])
 
   const handleLanguageChange = (lang: Language) => {
     setCurrentLang(lang)
   }
 
+  // Функция для форматирования текста с абзацами
+  const formatTextWithParagraphs = (text: string): string => {
+    if (!text) return ''
+    
+    // Заменяем двойные переносы строк (\r\n\r\n, \n\n, \r\r) на разделители абзацев
+    let formatted = text
+      .replace(/\r\n\r\n/g, '|||PARAGRAPH|||')
+      .replace(/\n\n/g, '|||PARAGRAPH|||')
+      .replace(/\r\r/g, '|||PARAGRAPH|||')
+    
+    // Разделяем на абзацы
+    const paragraphs = formatted.split('|||PARAGRAPH|||')
+    
+    // Оборачиваем каждый абзац в <p> тег и обрабатываем одиночные переносы строк
+    const htmlParagraphs = paragraphs
+      .map(para => {
+        if (!para.trim()) return ''
+        // Заменяем одиночные переносы строк на <br>
+        const withBreaks = para
+          .replace(/\r\n/g, '<br>')
+          .replace(/\n/g, '<br>')
+          .replace(/\r/g, '<br>')
+        return `<p>${withBreaks.trim()}</p>`
+      })
+      .filter(p => p !== '')
+    
+    return htmlParagraphs.join('')
+  }
+
   return (
     <main className="min-h-screen bg-gray-50">
       <Header currentLang={currentLang} onLanguageChange={handleLanguageChange} />
-      
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center animate-fade-in">
-            <h1 className="text-5xl font-bold mb-6">{t.about.title}</h1>
-            <p className="text-xl text-primary-100">{t.about.description}</p>
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        currentLang={currentLang}
+        title={t.about.title}
+        backgroundImage="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1920&h=600&fit=crop"
+      />
 
       {/* Main Content */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
+      <section className="py-6 sm:py-8 md:py-12 lg:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            {/* Mission */}
-            <div className="bg-white rounded-lg shadow-lg p-8 mb-8 animate-slide-in-right">
-              <div className="flex items-start">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="ml-6">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">{t.about.mission}</h2>
-                  <p className="text-lg text-gray-700 leading-relaxed">{t.about.missionText}</p>
-                </div>
+            {loading && (
+              <div className="text-center py-12">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+                <p className="mt-4 text-gray-600">
+                  {currentLang === 'uz' && 'Yuklanmoqda...'}
+                  {currentLang === 'ru' && 'Загрузка...'}
+                  {currentLang === 'en' && 'Loading...'}
+                </p>
               </div>
-            </div>
+            )}
 
-            {/* Vision */}
-            <div className="bg-white rounded-lg shadow-lg p-8 mb-8 animate-slide-in-left">
-              <div className="flex items-start">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="ml-6">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">{t.about.vision}</h2>
-                  <p className="text-lg text-gray-700 leading-relaxed">{t.about.visionText}</p>
-                </div>
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                {error}
               </div>
-            </div>
+            )}
 
-            {/* Values */}
-            <div className="bg-white rounded-lg shadow-lg p-8 mb-8 animate-fade-in">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">{t.about.values}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {t.about.valuesList.map((value, index) => (
-                  <div
-                    key={index}
-                    className="bg-primary-50 rounded-lg p-6 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                  >
-                    <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-white font-bold text-xl">{value.charAt(0)}</span>
+            {!loading && !error && aboutData && (
+              <>
+                {aboutData.about_us && (
+                  <ScrollReveal direction="up" delay={0}>
+                    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 pb-3 border-b-2 border-primary-200">
+                        {currentLang === 'uz' && 'Biz haqimizda'}
+                        {currentLang === 'ru' && 'О нас'}
+                        {currentLang === 'en' && 'About Us'}
+                      </h2>
+                      <div
+                        className="prose prose-sm sm:prose-base md:prose-lg max-w-none"
+                        style={{
+                          wordWrap: 'break-word',
+                        }}
+                        dangerouslySetInnerHTML={{ __html: formatTextWithParagraphs(aboutData.about_us) }}
+                      />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900">{value}</h3>
-                  </div>
-                ))}
+                  </ScrollReveal>
+                )}
+
+                {aboutData.tashkilot_tizulma && (
+                  <ScrollReveal direction="up" delay={100}>
+                    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
+                        {currentLang === 'uz' && 'Tashkilot tuzilmasi'}
+                        {currentLang === 'ru' && 'Структура организации'}
+                        {currentLang === 'en' && 'Organizational Structure'}
+                      </h2>
+                      <div
+                        className="prose prose-sm sm:prose-base md:prose-lg max-w-none"
+                        style={{
+                          wordWrap: 'break-word',
+                        }}
+                        dangerouslySetInnerHTML={{ __html: formatTextWithParagraphs(aboutData.tashkilot_tizulma) }}
+                      />
+                    </div>
+                  </ScrollReveal>
+                )}
+
+                {aboutData.gov && (
+                  <ScrollReveal direction="up" delay={200}>
+                    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
+                        {currentLang === 'uz' && 'Rahbariyat'}
+                        {currentLang === 'ru' && 'Руководство'}
+                        {currentLang === 'en' && 'Management'}
+                      </h2>
+                      <div
+                        className="prose prose-sm sm:prose-base md:prose-lg max-w-none"
+                        style={{
+                          wordWrap: 'break-word',
+                        }}
+                        dangerouslySetInnerHTML={{ __html: formatTextWithParagraphs(aboutData.gov) }}
+                      />
+                    </div>
+                  </ScrollReveal>
+                )}
+
+                {aboutData.central_apparat && (
+                  <ScrollReveal direction="up" delay={300}>
+                    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
+                        {currentLang === 'uz' && 'Markaziy apparat'}
+                        {currentLang === 'ru' && 'Центральный аппарат'}
+                        {currentLang === 'en' && 'Central Office'}
+                      </h2>
+                      <div
+                        className="prose prose-sm sm:prose-base md:prose-lg max-w-none"
+                        style={{
+                          wordWrap: 'break-word',
+                        }}
+                        dangerouslySetInnerHTML={{ __html: formatTextWithParagraphs(aboutData.central_apparat) }}
+                      />
+                    </div>
+                  </ScrollReveal>
+                )}
+
+                {aboutData.district_management && (
+                  <ScrollReveal direction="up" delay={400}>
+                    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
+                        {currentLang === 'uz' && 'Hududiy boshqarmalar'}
+                        {currentLang === 'ru' && 'Территориальные управления'}
+                        {currentLang === 'en' && 'Territorial Departments'}
+                      </h2>
+                      <div
+                        className="prose prose-sm sm:prose-base md:prose-lg max-w-none"
+                        style={{
+                          wordWrap: 'break-word',
+                        }}
+                        dangerouslySetInnerHTML={{ __html: formatTextWithParagraphs(aboutData.district_management) }}
+                      />
+                    </div>
+                  </ScrollReveal>
+                )}
+              </>
+            )}
+
+            {!loading && !error && !aboutData && (
+              <div className="text-center py-12">
+                <p className="text-gray-600 text-lg">
+                  {currentLang === 'uz' && 'Ma\'lumotlar topilmadi'}
+                  {currentLang === 'ru' && 'Данные не найдены'}
+                  {currentLang === 'en' && 'No data found'}
+                </p>
               </div>
-            </div>
+            )}
 
             {/* Quick Links */}
             <div className="bg-white rounded-lg shadow-lg p-8 animate-fade-in">

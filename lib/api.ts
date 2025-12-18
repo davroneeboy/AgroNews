@@ -3,7 +3,7 @@
  * Бэкенд будет реализован на Python отдельным разработчиком
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://zahq.uz'
 
 type ApiResponse<T> = {
   success: boolean
@@ -38,7 +38,7 @@ type SubscriptionForm = {
  */
 export const getNews = async (page: number = 1, limit: number = 10): Promise<ApiResponse<NewsItem[]>> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/news?page=${page}&limit=${limit}`, {
+    const response = await fetch(`${API_BASE_URL}/api/news?page=${page}&limit=${limit}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export const getNews = async (page: number = 1, limit: number = 10): Promise<Api
  */
 export const getNewsById = async (id: number): Promise<ApiResponse<NewsItem>> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/news/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/news/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ export const getNewsById = async (id: number): Promise<ApiResponse<NewsItem>> =>
  */
 export const submitFeedback = async (formData: FeedbackForm): Promise<ApiResponse<{ id: number }>> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/feedback`, {
+    const response = await fetch(`${API_BASE_URL}/api/feedback`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ export const submitFeedback = async (formData: FeedbackForm): Promise<ApiRespons
  */
 export const subscribeToNews = async (email: string): Promise<ApiResponse<{ id: number }>> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/subscriptions`, {
+    const response = await fetch(`${API_BASE_URL}/api/subscriptions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ export const getContacts = async (): Promise<ApiResponse<{
   workingHours: string
 }>> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/contacts`, {
+    const response = await fetch(`${API_BASE_URL}/api/contacts`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

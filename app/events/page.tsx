@@ -1,0 +1,71 @@
+'use client'
+
+import { useState } from 'react'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import FloatingButtons from '@/components/FloatingButtons'
+import PageHeader from '@/components/PageHeader'
+import { Language, getTranslation } from '@/lib/i18n'
+import Link from 'next/link'
+
+export default function EventsPage() {
+  const [currentLang, setCurrentLang] = useState<Language>('ru')
+  const t = getTranslation(currentLang)
+
+  return (
+    <main className="min-h-screen bg-gray-50">
+      <Header currentLang={currentLang} onLanguageChange={setCurrentLang} />
+      <PageHeader
+        currentLang={currentLang}
+        title={{
+          uz: 'Voqealar taqvimi',
+          ru: 'Календарь событий',
+          en: 'Event Calendar'
+        }}
+        backgroundImage="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&h=600&fit=crop"
+      />
+
+      <section className="bg-white border-b py-4">
+        <div className="container mx-auto px-4">
+          <nav className="flex items-center space-x-2 text-sm">
+            <Link href="/" className="text-primary-600 hover:text-primary-800">
+              {currentLang === 'uz' && 'Bosh sahifa'}
+              {currentLang === 'ru' && 'Главная'}
+              {currentLang === 'en' && 'Home'}
+            </Link>
+            <span className="text-gray-400">/</span>
+            <Link href="/info-service" className="text-primary-600 hover:text-primary-800">
+              {currentLang === 'uz' && 'Axborot xizmati'}
+              {currentLang === 'ru' && 'Информационный сервис'}
+              {currentLang === 'en' && 'Information Service'}
+            </Link>
+            <span className="text-gray-400">/</span>
+            <span className="text-gray-600">
+              {currentLang === 'uz' && 'Voqealar taqvimi'}
+              {currentLang === 'ru' && 'Календарь событий'}
+              {currentLang === 'en' && 'Event Calendar'}
+            </span>
+          </nav>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+              <p className="text-gray-600 text-lg">
+                {currentLang === 'uz' && 'Hozircha voqealar mavjud emas.'}
+                {currentLang === 'ru' && 'На данный момент события отсутствуют.'}
+                {currentLang === 'en' && 'No events available at the moment.'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer currentLang={currentLang} />
+      <FloatingButtons />
+    </main>
+  )
+}
+

@@ -1,0 +1,1574 @@
+openapi: 3.0.3
+info:
+  title: AgroNews API
+  version: 1.0.0
+  description: API для новостного портала агропромышленного комплекса. Предоставляет
+    полный CRUD для новостей, информационных сервисов, цифрового правительства и информации
+    о нас.
+paths:
+  /api/about/:
+    get:
+      operationId: about_list
+      description: Возвращает список всей информации о нас с пагинацией
+      summary: Получить список информации о нас
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - О нас
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAboutList'
+          description: ''
+    post:
+      operationId: about_create
+      description: Создает новую информацию о нас
+      summary: Создать информацию о нас
+      tags:
+      - О нас
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AboutRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AboutRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AboutRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/About'
+          description: ''
+  /api/about/{id}/:
+    get:
+      operationId: about_retrieve
+      description: Возвращает детальную информацию о нас
+      summary: Получить информацию о нас
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Biz haqimizda.
+        required: true
+      tags:
+      - О нас
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/About'
+          description: ''
+    put:
+      operationId: about_update
+      description: Обновляет всю информацию о нас
+      summary: Обновить информацию о нас
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Biz haqimizda.
+        required: true
+      tags:
+      - О нас
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AboutRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AboutRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AboutRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/About'
+          description: ''
+    patch:
+      operationId: about_partial_update
+      description: Обновляет отдельные поля информации о нас
+      summary: Частично обновить информацию о нас
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Biz haqimizda.
+        required: true
+      tags:
+      - О нас
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAboutRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAboutRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAboutRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/About'
+          description: ''
+    delete:
+      operationId: about_destroy
+      description: Удаляет информацию о нас из системы
+      summary: Удалить информацию о нас
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Biz haqimizda.
+        required: true
+      tags:
+      - О нас
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/digital-gov/:
+    get:
+      operationId: digital_gov_list
+      description: Возвращает список всех цифровых сервисов с пагинацией
+      summary: Получить список цифровых сервисов правительства
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Цифровое правительство
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDigitalGovList'
+          description: ''
+    post:
+      operationId: digital_gov_create
+      description: Создает новый цифровой сервис
+      summary: Создать цифровой сервис
+      tags:
+      - Цифровое правительство
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DigitalGovRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DigitalGovRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DigitalGovRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalGov'
+          description: ''
+  /api/digital-gov/{id}/:
+    get:
+      operationId: digital_gov_retrieve
+      description: Возвращает детальную информацию о цифровом сервисе
+      summary: Получить цифровой сервис
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Raqamli hukumat.
+        required: true
+      tags:
+      - Цифровое правительство
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalGov'
+          description: ''
+    put:
+      operationId: digital_gov_update
+      description: Обновляет всю информацию о цифровом сервисе
+      summary: Обновить цифровой сервис
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Raqamli hukumat.
+        required: true
+      tags:
+      - Цифровое правительство
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DigitalGovRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DigitalGovRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DigitalGovRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalGov'
+          description: ''
+    patch:
+      operationId: digital_gov_partial_update
+      description: Обновляет отдельные поля цифрового сервиса
+      summary: Частично обновить цифровой сервис
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Raqamli hukumat.
+        required: true
+      tags:
+      - Цифровое правительство
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDigitalGovRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDigitalGovRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDigitalGovRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalGov'
+          description: ''
+    delete:
+      operationId: digital_gov_destroy
+      description: Удаляет цифровой сервис из системы
+      summary: Удалить цифровой сервис
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Raqamli hukumat.
+        required: true
+      tags:
+      - Цифровое правительство
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/info-service/:
+    get:
+      operationId: info_service_list
+      description: Возвращает список всех информационных сервисов с пагинацией
+      summary: Получить список информационных сервисов
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Информационный сервис
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInfoServiceList'
+          description: ''
+    post:
+      operationId: info_service_create
+      description: Создает новый информационный сервис
+      summary: Создать информационный сервис
+      tags:
+      - Информационный сервис
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InfoServiceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InfoServiceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InfoServiceRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoService'
+          description: ''
+  /api/info-service/{id}/:
+    get:
+      operationId: info_service_retrieve
+      description: Возвращает детальную информацию об информационном сервисе
+      summary: Получить информационный сервис
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Axborot xizmati.
+        required: true
+      tags:
+      - Информационный сервис
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoService'
+          description: ''
+    put:
+      operationId: info_service_update
+      description: Обновляет всю информацию об информационном сервисе
+      summary: Обновить информационный сервис
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Axborot xizmati.
+        required: true
+      tags:
+      - Информационный сервис
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InfoServiceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InfoServiceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InfoServiceRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoService'
+          description: ''
+    patch:
+      operationId: info_service_partial_update
+      description: Обновляет отдельные поля информационного сервиса
+      summary: Частично обновить информационный сервис
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Axborot xizmati.
+        required: true
+      tags:
+      - Информационный сервис
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInfoServiceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInfoServiceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInfoServiceRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoService'
+          description: ''
+    delete:
+      operationId: info_service_destroy
+      description: Удаляет информационный сервис из системы
+      summary: Удалить информационный сервис
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Axborot xizmati.
+        required: true
+      tags:
+      - Информационный сервис
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/news/:
+    get:
+      operationId: news_list
+      description: Возвращает список всех новостей с пагинацией, поиском и фильтрацией
+      summary: Получить список новостей
+      parameters:
+      - in: query
+        name: created_after
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_before
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: is_active
+        schema:
+          type: string
+        description: Фильтр по активности (true/false)
+      - in: query
+        name: min_views
+        schema:
+          type: string
+        description: Минимальное количество просмотров
+      - in: query
+        name: ordering
+        schema:
+          type: string
+        description: Сортировка (created_at, -created_at, views_count, -views_count)
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Поиск по заголовку и описанию
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Фильтр по статусу (draft, published, archived)
+      tags:
+      - Новости
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNewsList'
+          description: ''
+    post:
+      operationId: news_create
+      description: Создает новую новость. Статус по умолчанию - 'draft'
+      summary: Создать новость
+      tags:
+      - Новости
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsCreateUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewsCreateUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewsCreateUpdateRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsCreateUpdate'
+          description: ''
+  /api/news-images/:
+    get:
+      operationId: news_images_list
+      description: Возвращает список всех изображений новостей
+      summary: Получить список изображений новостей
+      parameters:
+      - in: query
+        name: news
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - Изображения новостей
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNewsImageList'
+          description: ''
+    post:
+      operationId: news_images_create
+      description: Добавляет новое изображение к новости
+      summary: Создать изображение
+      tags:
+      - Изображения новостей
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsImageRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewsImageRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewsImageRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsImage'
+          description: ''
+  /api/news-images/{id}/:
+    get:
+      operationId: news_images_retrieve
+      description: Возвращает детальную информацию об изображении
+      summary: Получить изображение
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Yangilik rasmi.
+        required: true
+      tags:
+      - Изображения новостей
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsImage'
+          description: ''
+    put:
+      operationId: news_images_update
+      description: Обновляет информацию об изображении
+      summary: Обновить изображение
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Yangilik rasmi.
+        required: true
+      tags:
+      - Изображения новостей
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsImageRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewsImageRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewsImageRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsImage'
+          description: ''
+    patch:
+      operationId: news_images_partial_update
+      description: Обновляет отдельные поля изображения
+      summary: Частично обновить изображение
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Yangilik rasmi.
+        required: true
+      tags:
+      - Изображения новостей
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNewsImageRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNewsImageRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNewsImageRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsImage'
+          description: ''
+    delete:
+      operationId: news_images_destroy
+      description: Удаляет изображение из системы
+      summary: Удалить изображение
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Yangilik rasmi.
+        required: true
+      tags:
+      - Изображения новостей
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/news/{id}/:
+    get:
+      operationId: news_retrieve
+      description: Возвращает детальную информацию о новости и увеличивает счетчик
+        просмотров
+      summary: Получить новость
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Yangilik.
+        required: true
+      tags:
+      - Новости
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+          description: ''
+    put:
+      operationId: news_update
+      description: Обновляет всю информацию о новости
+      summary: Обновить новость
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Yangilik.
+        required: true
+      tags:
+      - Новости
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsCreateUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewsCreateUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewsCreateUpdateRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsCreateUpdate'
+          description: ''
+    patch:
+      operationId: news_partial_update
+      description: Обновляет отдельные поля новости
+      summary: Частично обновить новость
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Yangilik.
+        required: true
+      tags:
+      - Новости
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNewsCreateUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNewsCreateUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNewsCreateUpdateRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsCreateUpdate'
+          description: ''
+    delete:
+      operationId: news_destroy
+      description: Удаляет новость из системы
+      summary: Удалить новость
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Yangilik.
+        required: true
+      tags:
+      - Новости
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/news/published/:
+    get:
+      operationId: news_published_retrieve
+      description: Возвращает только опубликованные новости
+      summary: Получить опубликованные новости
+      tags:
+      - Новости
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+          description: ''
+  /api/news/top/:
+    get:
+      operationId: news_top_retrieve
+      description: Возвращает новости отсортированные по количеству просмотров
+      summary: Получить топ новостей
+      parameters:
+      - in: query
+        name: limit
+        schema:
+          type: integer
+        description: Количество новостей (по умолчанию 10)
+      tags:
+      - Новости
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+          description: ''
+components:
+  schemas:
+    About:
+      type: object
+      description: Сериализатор для информации о нас
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        about_us:
+          type: string
+          title: Biz haqimizda
+        tashkilot_tizulma:
+          type: string
+          title: Tashkilot tuzilmasi
+        gov:
+          type: string
+          title: Rahbariyat
+        central_apparat:
+          type: string
+          title: Markaziy apparat
+        district_management:
+          type: string
+          title: Tuman boshqaruvi
+        is_active:
+          type: boolean
+          title: Faol
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Yaratilgan sana
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Yangilangan sana
+      required:
+      - created_at
+      - id
+      - updated_at
+    AboutRequest:
+      type: object
+      description: Сериализатор для информации о нас
+      properties:
+        about_us:
+          type: string
+          title: Biz haqimizda
+        tashkilot_tizulma:
+          type: string
+          title: Tashkilot tuzilmasi
+        gov:
+          type: string
+          title: Rahbariyat
+        central_apparat:
+          type: string
+          title: Markaziy apparat
+        district_management:
+          type: string
+          title: Tuman boshqaruvi
+        is_active:
+          type: boolean
+          title: Faol
+    DigitalGov:
+      type: object
+      description: Сериализатор для цифрового правительства
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        about_us_digital:
+          type: string
+          title: Biz haqimizda (Raqamli)
+        fruit_ration:
+          type: string
+          title: Meva ratsioni
+        zahira:
+          type: string
+          title: Zaxira
+        vakancies:
+          type: string
+          title: Vakansiyalar
+        is_active:
+          type: boolean
+          title: Faol
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Yaratilgan sana
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Yangilangan sana
+      required:
+      - created_at
+      - id
+      - updated_at
+    DigitalGovRequest:
+      type: object
+      description: Сериализатор для цифрового правительства
+      properties:
+        about_us_digital:
+          type: string
+          title: Biz haqimizda (Raqamli)
+        fruit_ration:
+          type: string
+          title: Meva ratsioni
+        zahira:
+          type: string
+          title: Zaxira
+        vakancies:
+          type: string
+          title: Vakansiyalar
+        is_active:
+          type: boolean
+          title: Faol
+    InfoService:
+      type: object
+      description: Сериализатор для информационного сервиса
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        bayonat:
+          type: string
+          title: Баянот
+        taqvim_voqea:
+          type: string
+          title: Тақвим воқеа
+        majlis:
+          type: string
+          title: Мажлис
+        matbuot_anjuman:
+          type: string
+          title: Матбуот анжуман
+        press_relise:
+          type: string
+          title: Пресс-релиз
+        is_active:
+          type: boolean
+          title: Faol
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Yaratilgan sana
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Yangilangan sana
+      required:
+      - created_at
+      - id
+      - updated_at
+    InfoServiceRequest:
+      type: object
+      description: Сериализатор для информационного сервиса
+      properties:
+        bayonat:
+          type: string
+          title: Баянот
+        taqvim_voqea:
+          type: string
+          title: Тақвим воқеа
+        majlis:
+          type: string
+          title: Мажлис
+        matbuot_anjuman:
+          type: string
+          title: Матбуот анжуман
+        press_relise:
+          type: string
+          title: Пресс-релиз
+        is_active:
+          type: boolean
+          title: Faol
+    News:
+      type: object
+      description: Сериализатор для новостей
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: Sarlavha
+          maxLength: 255
+        slug:
+          type: string
+          readOnly: true
+          title: URL manzil
+          pattern: ^[-a-zA-Z0-9_]+$
+        thumb:
+          type: string
+          readOnly: true
+        short_description:
+          type: string
+          title: Qisqa tavsif
+          maxLength: 500
+        description:
+          type: string
+          title: Tavsif
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        status_display:
+          type: string
+          readOnly: true
+        views_count:
+          type: integer
+          readOnly: true
+          title: Ko'rishlar soni
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsImage'
+          readOnly: true
+        is_active:
+          type: boolean
+          title: Faol
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Yaratilgan sana
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Yangilangan sana
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          title: Nashr qilingan sana
+      required:
+      - created_at
+      - description
+      - id
+      - images
+      - slug
+      - status_display
+      - thumb
+      - title
+      - updated_at
+      - views_count
+    NewsCreateUpdate:
+      type: object
+      description: Сериализатор для создания и обновления новостей
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: Sarlavha
+          maxLength: 255
+        slug:
+          type: string
+          readOnly: true
+          title: URL manzil
+          pattern: ^[-a-zA-Z0-9_]+$
+        thumb:
+          type: string
+          format: uri
+          nullable: true
+        short_description:
+          type: string
+          title: Qisqa tavsif
+          maxLength: 500
+        description:
+          type: string
+          title: Tavsif
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        is_active:
+          type: boolean
+          title: Faol
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          title: Nashr qilingan sana
+      required:
+      - description
+      - id
+      - slug
+      - title
+    NewsCreateUpdateRequest:
+      type: object
+      description: Сериализатор для создания и обновления новостей
+      properties:
+        title:
+          type: string
+          minLength: 1
+          title: Sarlavha
+          maxLength: 255
+        thumb:
+          type: string
+          format: binary
+          nullable: true
+        short_description:
+          type: string
+          title: Qisqa tavsif
+          maxLength: 500
+        description:
+          type: string
+          minLength: 1
+          title: Tavsif
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        is_active:
+          type: boolean
+          title: Faol
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          title: Nashr qilingan sana
+      required:
+      - description
+      - title
+    NewsImage:
+      type: object
+      description: Сериализатор для изображений новостей
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        image:
+          type: string
+          readOnly: true
+        caption:
+          type: string
+          title: Sarlavha
+          maxLength: 255
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Tartib
+      required:
+      - id
+      - image
+    NewsImageRequest:
+      type: object
+      description: Сериализатор для изображений новостей
+      properties:
+        caption:
+          type: string
+          title: Sarlavha
+          maxLength: 255
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Tartib
+    PaginatedAboutList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/About'
+    PaginatedDigitalGovList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DigitalGov'
+    PaginatedInfoServiceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InfoService'
+    PaginatedNewsImageList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsImage'
+    PaginatedNewsList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/News'
+    PatchedAboutRequest:
+      type: object
+      description: Сериализатор для информации о нас
+      properties:
+        about_us:
+          type: string
+          title: Biz haqimizda
+        tashkilot_tizulma:
+          type: string
+          title: Tashkilot tuzilmasi
+        gov:
+          type: string
+          title: Rahbariyat
+        central_apparat:
+          type: string
+          title: Markaziy apparat
+        district_management:
+          type: string
+          title: Tuman boshqaruvi
+        is_active:
+          type: boolean
+          title: Faol
+    PatchedDigitalGovRequest:
+      type: object
+      description: Сериализатор для цифрового правительства
+      properties:
+        about_us_digital:
+          type: string
+          title: Biz haqimizda (Raqamli)
+        fruit_ration:
+          type: string
+          title: Meva ratsioni
+        zahira:
+          type: string
+          title: Zaxira
+        vakancies:
+          type: string
+          title: Vakansiyalar
+        is_active:
+          type: boolean
+          title: Faol
+    PatchedInfoServiceRequest:
+      type: object
+      description: Сериализатор для информационного сервиса
+      properties:
+        bayonat:
+          type: string
+          title: Баянот
+        taqvim_voqea:
+          type: string
+          title: Тақвим воқеа
+        majlis:
+          type: string
+          title: Мажлис
+        matbuot_anjuman:
+          type: string
+          title: Матбуот анжуман
+        press_relise:
+          type: string
+          title: Пресс-релиз
+        is_active:
+          type: boolean
+          title: Faol
+    PatchedNewsCreateUpdateRequest:
+      type: object
+      description: Сериализатор для создания и обновления новостей
+      properties:
+        title:
+          type: string
+          minLength: 1
+          title: Sarlavha
+          maxLength: 255
+        thumb:
+          type: string
+          format: binary
+          nullable: true
+        short_description:
+          type: string
+          title: Qisqa tavsif
+          maxLength: 500
+        description:
+          type: string
+          minLength: 1
+          title: Tavsif
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        is_active:
+          type: boolean
+          title: Faol
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          title: Nashr qilingan sana
+    PatchedNewsImageRequest:
+      type: object
+      description: Сериализатор для изображений новостей
+      properties:
+        caption:
+          type: string
+          title: Sarlavha
+          maxLength: 255
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Tartib
+    StatusEnum:
+      enum:
+      - draft
+      - published
+      - archived
+      type: string
+      description: |-
+        * `draft` - Qoralama
+        * `published` - Nashr etilgan
+        * `archived` - Arxivda
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+
