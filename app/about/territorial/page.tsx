@@ -325,6 +325,7 @@ export default function TerritorialPage() {
         manager: {
           name: 'ACHILOV XALDAR TAJIMURATOVICH',
           position: 'Head of Karakalpakstan Republic Department',
+          photo: '/viloyat/ACHILOV XALDAR TAJIMURATOVICH.jpg',
         }
       },
       { 
