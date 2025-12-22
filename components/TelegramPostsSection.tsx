@@ -115,21 +115,21 @@ const TelegramPostsSection = ({ currentLang }: TelegramPostsSectionProps) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     
-    // Форматируем время
-    const hours = date.getHours().toString().padStart(2, '0')
-    const minutes = date.getMinutes().toString().padStart(2, '0')
+    // Форматируем время вручную с использованием UTC для избежания проблем с гидратацией
+    const hours = date.getUTCHours().toString().padStart(2, '0')
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0')
     const time = `${hours}:${minutes}`
     
-    // Форматируем дату в зависимости от языка
-    const day = date.getDate()
+    // Форматируем дату в зависимости от языка (используем UTC для консистентности)
+    const day = date.getUTCDate()
     const monthNames: { [key: string]: string[] } = {
       uz: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'],
       ru: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
       en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     }
     
-    const month = monthNames[currentLang][date.getMonth()]
-    const year = date.getFullYear()
+    const month = monthNames[currentLang][date.getUTCMonth()]
+    const year = date.getUTCFullYear()
     
     let formattedDate = ''
     if (currentLang === 'uz') {

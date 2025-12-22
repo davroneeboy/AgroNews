@@ -46,13 +46,33 @@ export default function NewsDetailPage() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    return date.toLocaleDateString(currentLang === 'uz' ? 'uz-UZ' : currentLang === 'ru' ? 'ru-RU' : 'en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
+    
+    // Форматируем время вручную для избежания проблем с гидратацией
+    const hours = date.getUTCHours().toString().padStart(2, '0')
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0')
+    const time = `${hours}:${minutes}`
+    
+    // Форматируем дату в зависимости от языка
+    const day = date.getUTCDate()
+    const monthNames: { [key: string]: string[] } = {
+      uz: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'],
+      ru: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+      en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    }
+    
+    const month = monthNames[currentLang][date.getUTCMonth()]
+    const year = date.getUTCFullYear()
+    
+    let formattedDate = ''
+    if (currentLang === 'uz') {
+      formattedDate = `${time}, ${day}-${month}, ${year}`
+    } else if (currentLang === 'ru') {
+      formattedDate = `${time}, ${day} ${month} ${year}`
+    } else {
+      formattedDate = `${time}, ${month} ${day}, ${year}`
+    }
+    
+    return formattedDate
   }
 
   if (loading) {

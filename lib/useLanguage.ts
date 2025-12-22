@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { Language } from './i18n'
 
@@ -8,7 +8,26 @@ export function useLanguage() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const [currentLang, setCurrentLangState] = useState<Language>('ru')
+  
+  // Синхронно читаем язык из URL для одинакового начального состояния на сервере и клиенте
+  const initialLang = useMemo(() => {
+    const langParam = searchParams.get('lang') as Language | null
+    if (langParam && ['uz', 'ru', 'en'].includes(langParam)) {
+      return langParam
+    }
+    // На сервере localStorage недоступен, поэтому всегда возвращаем 'ru'
+    if (typeof window === 'undefined') {
+      return 'ru'
+    }
+    // На клиенте проверяем localStorage
+    const savedLang = localStorage.getItem('language') as Language | null
+    if (savedLang && ['uz', 'ru', 'en'].includes(savedLang)) {
+      return savedLang
+    }
+    return 'ru'
+  }, [searchParams])
+  
+  const [currentLang, setCurrentLangState] = useState<Language>(initialLang)
   const [isInitialized, setIsInitialized] = useState(false)
 
   const updateUrl = useCallback((lang: Language) => {
@@ -17,35 +36,34 @@ export function useLanguage() {
     router.push(`${pathname}?${params.toString()}`, { scroll: false })
   }, [pathname, searchParams, router])
 
-  // Читаем язык из URL при загрузке
+  // Синхронизируем состояние с URL и localStorage после монтирования
   useEffect(() => {
     if (isInitialized) return
 
     const langParam = searchParams.get('lang') as Language | null
     if (langParam && ['uz', 'ru', 'en'].includes(langParam)) {
-      setCurrentLangState(langParam)
-      localStorage.setItem('language', langParam)
+      if (langParam !== currentLang) {
+        setCurrentLangState(langParam)
+      }
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('language', langParam)
+      }
       setIsInitialized(true)
     } else {
       // Если языка нет в URL, проверяем localStorage
-      const savedLang = localStorage.getItem('language') as Language | null
-      if (savedLang && ['uz', 'ru', 'en'].includes(savedLang)) {
-        setCurrentLangState(savedLang)
-        // Обновляем URL только если мы на клиенте
-        if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined') {
+        const savedLang = localStorage.getItem('language') as Language | null
+        if (savedLang && ['uz', 'ru', 'en'].includes(savedLang) && savedLang !== currentLang) {
+          setCurrentLangState(savedLang)
           updateUrl(savedLang)
-        }
-      } else {
-        // По умолчанию русский
-        setCurrentLangState('ru')
-        // Обновляем URL только если мы на клиенте
-        if (typeof window !== 'undefined') {
+        } else if (!savedLang && currentLang !== 'ru') {
+          setCurrentLangState('ru')
           updateUrl('ru')
         }
       }
       setIsInitialized(true)
     }
-  }, [searchParams, isInitialized, updateUrl])
+  }, [searchParams, isInitialized, currentLang, updateUrl])
 
   // Обновляем язык при изменении параметра в URL
   useEffect(() => {
