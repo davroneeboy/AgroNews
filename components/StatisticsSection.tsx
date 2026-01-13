@@ -96,9 +96,6 @@ const StatisticsSection = ({ currentLang }: StatisticsSectionProps) => {
               key={stat.id}
               className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center card-hover animate-float"
               style={{
-                animationDelay: `${index * 0.2}s`,
-              }}
-              style={{
                 animationDelay: `${index * 0.1}s`,
               }}
             >
