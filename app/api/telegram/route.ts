@@ -451,7 +451,7 @@ export async function GET() {
     const channelUsername = process.env.TELEGRAM_CHANNEL_USERNAME || DEFAULT_CHANNEL_USERNAME
 
     // Пытаемся получить через Bot API, если доступен
-    let posts = await getTelegramPostsFromBotAPI(channelUsername)
+    let posts: any[] | null = await getTelegramPostsFromBotAPI(channelUsername)
     
     // Если Bot API не работает, используем RSS парсинг
     if (!posts || posts.length === 0) {
