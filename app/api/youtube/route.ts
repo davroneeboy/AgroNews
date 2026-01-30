@@ -4,9 +4,8 @@ import { NextResponse } from 'next/server'
 export const revalidate = 3600
 
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY
-// Channel ID канала (можно переопределить через переменную окружения)
-const DEFAULT_CHANNEL_ID = 'UC9fTKHUcaZOC9NO9xlVKldg'
-const YOUTUBE_CHANNEL_USERNAME = 'Agrosanoat_uz' // Используется как fallback для поиска
+// Канал: https://www.youtube.com/@Agrosanoat_uz
+const CHANNEL_HANDLE = 'Agrosanoat_uz'
 
 export async function GET() {
   if (!YOUTUBE_API_KEY) {
@@ -17,35 +16,35 @@ export async function GET() {
   }
 
   try {
-    // Сначала получаем channelId из переменной окружения, иначе используем дефолтный
-    let channelId = process.env.YOUTUBE_CHANNEL_ID || DEFAULT_CHANNEL_ID
+    let channelId: string | undefined
 
-    // Если channelId не указан, пытаемся найти через поиск (fallback)
-    if (!channelId || channelId === DEFAULT_CHANNEL_ID) {
-      // Используем поиск для получения channelId по username (forUsername устарел)
+    // Приоритет: получаем channelId по handle @Agrosanoat_uz (YouTube Data API v3 forHandle)
+    const channelRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/channels?key=${YOUTUBE_API_KEY}&part=id,snippet&forHandle=${CHANNEL_HANDLE}`
+    )
+    if (channelRes.ok) {
+      const channelData = await channelRes.json()
+      if (channelData.items && channelData.items.length > 0) {
+        channelId = channelData.items[0].id
+      }
+    }
+
+    // Fallback: поиск по имени (если forHandle не сработал)
+    if (!channelId) {
       const searchResponse = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&q=@${YOUTUBE_CHANNEL_USERNAME}&type=channel&part=snippet&maxResults=1`
+        `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&q=@${CHANNEL_HANDLE}&type=channel&part=snippet&maxResults=1`
       )
-
       if (searchResponse.ok) {
         const searchData = await searchResponse.json()
         if (searchData.items && searchData.items.length > 0) {
           channelId = searchData.items[0].id.channelId
         }
       }
+    }
 
-      // Если не получилось, пробуем без @
-      if (!channelId || channelId === DEFAULT_CHANNEL_ID) {
-        const searchResponse2 = await fetch(
-          `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&q=${YOUTUBE_CHANNEL_USERNAME}&type=channel&part=snippet&maxResults=1`
-        )
-        if (searchResponse2.ok) {
-          const searchData2 = await searchResponse2.json()
-          if (searchData2.items && searchData2.items.length > 0) {
-            channelId = searchData2.items[0].id.channelId
-          }
-        }
-      }
+    // Последний fallback: переменная окружения (опционально)
+    if (!channelId) {
+      channelId = process.env.YOUTUBE_CHANNEL_ID
     }
 
     if (!channelId) {
