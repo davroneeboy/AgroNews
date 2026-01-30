@@ -136,22 +136,23 @@ const MainDirectionsSection = ({ currentLang }: MainDirectionsSectionProps) => {
   ]
 
   return (
-    <section className="py-16 bg-primary-50">
+    <section className="py-20 bg-earth-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative inline-block">
+        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative pb-3 inline-block">
           {t.sections.mainDirections}
-          <span className="absolute bottom-0 left-0 w-24 h-1 bg-primary-600"></span>
+          <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
           {directions.map((direction, index) => (
             <a
               key={direction.id}
               href={direction.href}
-              className="bg-white rounded-lg p-6 card-hover text-center group animate-bounce-in hover:animate-glow"
+              className="bg-white rounded-xl p-6 card-hover text-center group border border-gray-100 shadow-landing hover:shadow-landing-lg animate-bounce-in"
               style={{
                 animationDelay: `${index * 0.15}s`,
               }}
               tabIndex={0}
+              aria-label={direction.title[currentLang]}
             >
               <div className="text-primary-600 mb-4 flex justify-center group-hover:scale-110 transition-transform duration-300">
                 {direction.icon}

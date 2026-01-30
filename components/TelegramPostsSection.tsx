@@ -159,12 +159,12 @@ const TelegramPostsSection = ({ currentLang }: TelegramPostsSectionProps) => {
   // Всегда рендерим компонент, даже если есть ошибки
   return (
     <>
-      <section className="py-16 bg-gray-50">
+      <section className="py-20 bg-earth-50">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-4xl font-bold text-gray-900 relative">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-4xl font-bold text-gray-900 relative pb-3">
               {t.sections.telegram}
-              <span className="absolute bottom-0 left-0 w-24 h-1 bg-primary-600"></span>
+              <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
             </h2>
             <div className="flex items-center space-x-4">
               {isLoading && (

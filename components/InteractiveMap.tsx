@@ -264,18 +264,18 @@ const InteractiveMap = ({ currentLang }: InteractiveMapProps) => {
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative inline-block">
+        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative pb-3 inline-block">
           {currentLang === 'uz' && 'Hududiy statistika'}
           {currentLang === 'ru' && 'Региональная статистика'}
           {currentLang === 'en' && 'Regional Statistics'}
-          <span className="absolute bottom-0 left-0 w-24 h-1 bg-primary-600"></span>
+          <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Карта */}
-          <div className="lg:col-span-2 bg-primary-50 rounded-lg p-6 relative overflow-hidden">
+          <div className="lg:col-span-2 bg-earth-50 rounded-xl p-6 relative overflow-hidden border border-gray-100 shadow-landing">
             <svg
               viewBox="0 0 1000 652"
               className="w-full h-auto"

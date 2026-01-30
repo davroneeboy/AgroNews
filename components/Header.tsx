@@ -276,7 +276,7 @@ const Header = () => {
       <div className={`${isHomePage ? 'absolute top-0 left-0 right-0 z-50' : ''}`}>
         <div className="container mx-auto px-4">
           {/* Top Section: Logo, Title, Phone, Social, Languages */}
-          <div className={`flex flex-col py-3 ${isHomePage ? 'border-b border-white/20' : 'border-b border-gray-200 bg-white/95 backdrop-blur-sm'}`}>
+          <div className={`flex flex-col py-3 ${isHomePage ? 'border-b border-white/25' : 'border-b border-earth-200 bg-white/98 backdrop-blur-sm shadow-landing'}`}>
           <div className="flex items-center justify-between flex-wrap gap-4">
             {/* Logo and Title */}
             <Link href={addLangToUrl('/', currentLang)} className="flex items-center flex-1 min-w-0 hover:opacity-80 transition-opacity">
@@ -370,7 +370,7 @@ const Header = () => {
 
           {/* Navigation Menu */}
           <div className="hidden lg:block">
-            <nav className={`flex items-center justify-center space-x-1 py-3 flex-wrap ${isHomePage ? 'bg-white/10 backdrop-blur-sm rounded-lg px-2' : ''}`}>
+            <nav className={`flex items-center justify-center space-x-1 py-3 flex-wrap ${isHomePage ? 'bg-primary-900/20 backdrop-blur-md rounded-xl px-3 border border-white/10' : ''}`}>
               {menuItems.map(renderMenuItem)}
             </nav>
           </div>

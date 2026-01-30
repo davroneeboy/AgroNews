@@ -85,16 +85,19 @@ const StatisticsSection = ({ currentLang }: StatisticsSectionProps) => {
   ]
 
   return (
-    <section className="py-16 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+    <section className="py-20 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold mb-12 text-center">
-          {t.sections.statistics}
-        </h2>
+        <div className="flex justify-center mb-12">
+          <h2 className="text-4xl font-bold relative inline-block pb-3">
+            {t.sections.statistics}
+            <span className="absolute bottom-0 left-0 right-0 w-full h-1 rounded-full bg-white/60" />
+          </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {statistics.map((stat, index) => (
             <div
               key={stat.id}
-              className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center card-hover animate-float"
+              className="bg-white/15 backdrop-blur-md rounded-xl p-6 text-center card-hover border border-white/10 shadow-landing-lg"
               style={{
                 animationDelay: `${index * 0.1}s`,
               }}

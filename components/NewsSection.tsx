@@ -255,12 +255,12 @@ const NewsSection = ({ currentLang }: NewsSectionProps) => {
   }
 
   return (
-    <section id="news" className="py-16 bg-white">
+    <section id="news" className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-4xl font-bold text-gray-900 relative">
+        <div className="flex items-center justify-between mb-10">
+          <h2 className="text-4xl font-bold text-gray-900 relative pb-3">
             {t.news.title}
-            <span className="absolute bottom-0 left-0 w-24 h-1 bg-primary-600"></span>
+            <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500"></span>
           </h2>
           <div className="flex space-x-2">
             <button
@@ -312,7 +312,7 @@ const NewsSection = ({ currentLang }: NewsSectionProps) => {
             {news.map((newsItem, index) => (
             <article
                 key={newsItem.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden card-hover flex-shrink-0 w-80 md:w-96 animate-slide-in-right hover:animate-glow"
+              className="bg-white rounded-xl shadow-landing hover:shadow-landing-lg overflow-hidden card-hover flex-shrink-0 w-80 md:w-96 border border-gray-100 animate-slide-in-right"
               style={{
                 animationDelay: `${index * 0.15}s`,
               }}

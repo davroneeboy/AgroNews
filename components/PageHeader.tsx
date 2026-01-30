@@ -30,7 +30,7 @@ const PageHeader = ({ currentLang, title, backgroundImage = 'https://images.unsp
           priority
           quality={90}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-900/80 via-primary-800/70 to-primary-900/90" />
       </div>
 
       {/* Контент */}

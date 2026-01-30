@@ -105,22 +105,23 @@ const AnalyticsSection = ({ currentLang }: AnalyticsSectionProps) => {
   ]
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-20 bg-earth-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative inline-block">
+        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative pb-3 inline-block">
           {t.sections.analytics}
-          <span className="absolute bottom-0 left-0 w-24 h-1 bg-primary-600"></span>
+          <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
           {analyticsItems.map((item, index) => (
             <a
               key={item.id}
               href={item.href}
-              className="bg-white rounded-lg p-6 card-hover animate-slide-in-right hover:scale-105"
+              className="bg-white rounded-xl p-6 card-hover animate-slide-in-right border border-gray-100 shadow-landing hover:shadow-landing-lg"
               style={{
                 animationDelay: `${index * 0.15}s`,
               }}
               tabIndex={0}
+              aria-label={item.title[currentLang]}
             >
               <div className="text-primary-600 mb-4">{item.icon}</div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title[currentLang]}</h3>

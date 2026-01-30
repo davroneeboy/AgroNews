@@ -104,11 +104,11 @@ const AdviceSection = ({ currentLang }: AdviceSectionProps) => {
   ]
 
   return (
-    <section className="py-16 bg-primary-50">
+    <section className="py-20 bg-earth-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative inline-block">
+        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative pb-3 inline-block">
           {t.sections.advice}
-          <span className="absolute bottom-0 left-0 w-24 h-1 bg-primary-600"></span>
+          <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
           {adviceItems.map((item, index) => (

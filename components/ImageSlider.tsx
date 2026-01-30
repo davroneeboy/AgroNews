@@ -163,7 +163,7 @@ const ImageSlider = ({ currentLang }: ImageSliderProps) => {
                 priority={index === 0}
                 quality={90}
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+              <div className="absolute inset-0 bg-gradient-to-b from-primary-900/70 via-primary-800/50 to-primary-900/80" />
             </div>
 
             {/* Контент слайда */}
