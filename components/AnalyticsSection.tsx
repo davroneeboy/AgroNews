@@ -105,27 +105,28 @@ const AnalyticsSection = ({ currentLang }: AnalyticsSectionProps) => {
   ]
 
   return (
-    <section className="py-20 bg-earth-50">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative pb-3 inline-block">
-          {t.sections.analytics}
-          <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+    <section className="py-20 bg-paper">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-12">
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-800 section-heading">
+            {t.sections.analytics}
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {analyticsItems.map((item, index) => (
             <a
               key={item.id}
               href={item.href}
-              className="bg-white rounded-xl p-6 card-hover animate-slide-in-right border border-gray-100 shadow-landing hover:shadow-landing-lg"
+              className="glass-card-light rounded-2xl p-6 card-lift group"
               style={{
                 animationDelay: `${index * 0.15}s`,
               }}
               tabIndex={0}
               aria-label={item.title[currentLang]}
             >
-              <div className="text-primary-600 mb-4">{item.icon}</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title[currentLang]}</h3>
-              <p className="text-gray-600 text-sm">{item.description[currentLang]}</p>
+              <div className="text-primary-500 mb-4">{item.icon}</div>
+              <h3 className="font-display text-lg font-bold text-slate-800 mb-2">{item.title[currentLang]}</h3>
+              <p className="text-slate-800/60 text-sm">{item.description[currentLang]}</p>
             </a>
           ))}
         </div>

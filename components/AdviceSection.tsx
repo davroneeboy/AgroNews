@@ -104,17 +104,19 @@ const AdviceSection = ({ currentLang }: AdviceSectionProps) => {
   ]
 
   return (
-    <section className="py-20 bg-earth-50">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative pb-3 inline-block">
-          {t.sections.advice}
-          <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+    <section className="py-16 bg-sage-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <div className="accent-line mb-3" />
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-800">
+            {t.sections.advice}
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {adviceItems.map((item, index) => (
             <div
               key={item.id}
-              className="bg-white rounded-lg p-6 card-hover shadow-md"
+              className="bg-white rounded-xl p-6 card-hover shadow-card border border-sage-300"
               style={{
                 animationDelay: `${index * 0.1}s`,
               }}

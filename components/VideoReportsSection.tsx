@@ -238,13 +238,15 @@ const VideoReportsSection = ({ currentLang }: VideoReportsSectionProps) => {
 
   return (
     <>
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-10">
-            <h2 className="text-4xl font-bold text-gray-900 relative pb-3">
-              {t.sections.videoReports}
-              <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
-            </h2>
+            <div>
+              <div className="accent-line mb-3" />
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-800">
+                {t.sections.videoReports}
+              </h2>
+            </div>
             <div className="flex items-center space-x-4">
               {isLoading && (
                 <div className="flex items-center text-gray-500 text-sm">
@@ -303,7 +305,7 @@ const VideoReportsSection = ({ currentLang }: VideoReportsSectionProps) => {
             {videoData.map((video, index) => (
               <article
                 key={video.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden card-hover flex-shrink-0 w-80 md:w-96 cursor-pointer animate-slide-in-right hover:scale-105"
+                className="glass-card-light rounded-2xl overflow-hidden card-lift flex-shrink-0 w-80 md:w-96 cursor-pointer"
                 style={{
                   animationDelay: `${index * 0.1}s`,
                 }}

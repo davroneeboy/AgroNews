@@ -138,22 +138,16 @@ const ImageSlider = ({ currentLang }: ImageSliderProps) => {
   }
 
   return (
-    <section className="relative h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden">
-      {/* Слайды */}
+    <section className="relative h-[600px] md:h-[700px] lg:h-[780px] overflow-hidden">
+      {/* Slides */}
       <div className="relative w-full h-full">
         {slides.map((slide, index) => (
           <div
             key={slide.id}
-            className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-              index === currentSlide
-                ? 'opacity-100 scale-100 z-20'
-                : 'opacity-0 scale-105 z-10'
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentSlide ? 'opacity-100 z-20' : 'opacity-0 z-10'
             }`}
-            style={{
-              transform: `scale(${index === currentSlide ? 1 : 1.05})`,
-            }}
           >
-            {/* Фоновое изображение */}
             <div className="absolute inset-0">
               <Image
                 src={slide.image}
@@ -163,30 +157,33 @@ const ImageSlider = ({ currentLang }: ImageSliderProps) => {
                 priority={index === 0}
                 quality={90}
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-primary-900/70 via-primary-800/50 to-primary-900/80" />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary-950/90 via-primary-900/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-transparent to-transparent" />
             </div>
 
-            {/* Контент слайда */}
-            <div className="relative z-10 h-full flex items-center justify-center">
-              <div className="container mx-auto px-4 text-center">
-                <div
-                  className={`transition-all duration-1000 delay-300 ${
-                    index === currentSlide
-                      ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 translate-y-10'
-                  }`}
-                >
-                  <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 drop-shadow-2xl animate-pulse-slow">
-                    {slide.title[currentLang]}
-                  </h1>
-                  <p className="text-xl md:text-2xl lg:text-3xl text-white/90 drop-shadow-lg mb-4 max-w-3xl mx-auto">
-                    {slide.subtitle[currentLang]}
-                  </p>
-                  {slide.description && (
-                    <p className="text-lg md:text-xl text-white/80 drop-shadow-md max-w-2xl mx-auto">
-                      {slide.description[currentLang]}
+            <div className="relative z-10 h-full flex items-center">
+              <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-3xl">
+                  <div
+                    className={`transition-all duration-700 delay-200 ${
+                      index === currentSlide
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 translate-y-6'
+                    }`}
+                  >
+                    <div className="accent-line-wide mb-6" />
+                    <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-5 leading-tight tracking-tight">
+                      {slide.title[currentLang]}
+                    </h1>
+                    <p className="text-lg md:text-xl text-white/90 mb-3 leading-relaxed max-w-2xl">
+                      {slide.subtitle[currentLang]}
                     </p>
-                  )}
+                    {slide.description && (
+                      <p className="text-base md:text-lg text-accent-300 font-medium tracking-wide">
+                        {slide.description[currentLang]}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -194,72 +191,49 @@ const ImageSlider = ({ currentLang }: ImageSliderProps) => {
         ))}
       </div>
 
-      {/* Навигационные стрелки */}
+      {/* Navigation arrows */}
       <button
         onClick={handlePrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group"
+        className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center transition-all duration-200"
         aria-label="Предыдущий слайд"
         tabIndex={0}
       >
-        <svg
-          className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:text-primary-200 transition-colors"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
         </svg>
       </button>
       <button
         onClick={handleNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 group"
+        className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center transition-all duration-200"
         aria-label="Следующий слайд"
         tabIndex={0}
       >
-        <svg
-          className="w-6 h-6 md:w-7 md:h-7 text-white group-hover:text-primary-200 transition-colors"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
         </svg>
       </button>
 
-      {/* Индикаторы слайдов */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex space-x-2">
+      {/* Slide indicators */}
+      <div className="absolute bottom-8 left-4 sm:left-6 lg:left-8 z-30 flex items-center space-x-2">
+        <span className="text-white/60 text-sm font-medium mr-2 tabular-nums">
+          {String(currentSlide + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
+        </span>
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => handleSlideClick(index)}
             className={`transition-all duration-300 rounded-full ${
               index === currentSlide
-                ? 'w-12 h-3 bg-white animate-glow'
-                : 'w-3 h-3 bg-white/50 hover:bg-white/70'
+                ? 'w-8 h-1.5 bg-accent-400'
+                : 'w-4 h-1.5 bg-white/30 hover:bg-white/50'
             }`}
             aria-label={`Перейти к слайду ${index + 1}`}
             tabIndex={0}
           />
         ))}
       </div>
-
-      {/* Волновой эффект внизу */}
-      <div className="absolute bottom-0 left-0 right-0 z-20">
-        <svg
-          className="w-full h-20 text-white"
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0,60 C300,100 600,20 900,60 C1050,80 1150,40 1200,60 L1200,120 L0,120 Z"
-            fill="currentColor"
-            className="animate-wave"
-          />
-        </svg>
-      </div>
     </section>
   )
 }
 
 export default ImageSlider
-

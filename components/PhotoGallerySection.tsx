@@ -13,143 +13,45 @@ const PhotoGallerySection = ({ currentLang }: PhotoGallerySectionProps) => {
   const t = getTranslation(currentLang)
 
   const photos = [
-    // Сады (Bog'lar)
     {
       id: 1,
       url: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Mevali bog\'',
-        ru: 'Фруктовый сад',
-        en: 'Fruit orchard',
-      },
+      title: { uz: 'Mevali bog\'', ru: 'Фруктовый сад', en: 'Fruit orchard' },
     },
     {
       id: 2,
-      url: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Olma bog\'i',
-        ru: 'Яблоневый сад',
-        en: 'Apple orchard',
-      },
+      url: '/gallery/ChatGPT Image 26 июн. 2026 г., 19_39_57.png',
+      title: { uz: 'Olma bog\'i', ru: 'Яблоневый сад', en: 'Apple orchard' },
     },
     {
       id: 3,
-      url: 'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Meva yig\'ish',
-        ru: 'Сбор фруктов',
-        en: 'Fruit harvesting',
-      },
+      url: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&h=600&fit=crop',
+      title: { uz: 'Hosil yig\'ish', ru: 'Сбор урожая', en: 'Harvest' },
     },
     {
       id: 4,
-      url: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Meva-sabzavot bog\'i',
-        ru: 'Сад фруктов и овощей',
-        en: 'Fruit and vegetable garden',
-      },
+      url: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&h=600&fit=crop',
+      title: { uz: 'Dalalar', ru: 'Сельскохозяйственные поля', en: 'Agricultural fields' },
     },
     {
       id: 5,
-      url: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Qishloq xo\'jaligi bog\'lari',
-        ru: 'Сельскохозяйственные сады',
-        en: 'Agricultural gardens',
-      },
+      url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop',
+      title: { uz: 'Bug\'doy dalalari', ru: 'Пшеничные поля', en: 'Wheat fields' },
     },
-    // Виноградники (Tokzorlar)
     {
       id: 6,
-      url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Tokzor',
-        ru: 'Виноградник',
-        en: 'Vineyard',
-      },
+      url: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&h=600&fit=crop',
+      title: { uz: 'Yashil maydonlar', ru: 'Зелёные угодья', en: 'Green fields' },
     },
     {
       id: 7,
-      url: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Uzum yetishtirish',
-        ru: 'Выращивание винограда',
-        en: 'Grape cultivation',
-      },
+      url: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800&h=600&fit=crop',
+      title: { uz: 'Uzum yig\'ish', ru: 'Сбор винограда', en: 'Grape harvesting' },
     },
     {
       id: 8,
-      url: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Uzum yig\'ish',
-        ru: 'Сбор винограда',
-        en: 'Grape harvesting',
-      },
-    },
-    {
-      id: 9,
-      url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Tokzor maydoni',
-        ru: 'Виноградное поле',
-        en: 'Vineyard field',
-      },
-    },
-    // Теплицы (Issiqxonalar)
-    {
-      id: 10,
-      url: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Zamonaviy issiqxona',
-        ru: 'Современная теплица',
-        en: 'Modern greenhouse',
-      },
-    },
-    {
-      id: 11,
-      url: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Issiqxonada sabzavot yetishtirish',
-        ru: 'Выращивание овощей в теплице',
-        en: 'Vegetable cultivation in greenhouse',
-      },
-    },
-    {
-      id: 12,
-      url: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Issiqxona kompleksi',
-        ru: 'Тепличный комплекс',
-        en: 'Greenhouse complex',
-      },
-    },
-    {
-      id: 13,
-      url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Issiqxonada gidroponika',
-        ru: 'Гидропоника в теплице',
-        en: 'Hydroponics in greenhouse',
-      },
-    },
-    {
-      id: 14,
-      url: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Issiqxona texnologiyasi',
-        ru: 'Тепличные технологии',
-        en: 'Greenhouse technology',
-      },
-    },
-    {
-      id: 15,
-      url: 'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&h=600&fit=crop',
-      title: {
-        uz: 'Yil davomida issiqxona',
-        ru: 'Круглогодичная теплица',
-        en: 'Year-round greenhouse',
-      },
+      url: '/gallery/ChatGPT Image 27 июн. 2026 г., 12_16_09.png',
+      title: { uz: 'Zamonaviy issiqxona', ru: 'Современная теплица', en: 'Modern greenhouse' },
     },
   ]
 
@@ -163,13 +65,15 @@ const PhotoGallerySection = ({ currentLang }: PhotoGallerySectionProps) => {
 
   return (
     <>
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-gray-900 mb-12 relative pb-3 inline-block">
-            {t.sections.photoGallery}
-            <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-10">
+            <div className="accent-line mb-3" />
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-800">
+              {t.sections.photoGallery}
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {photos.map((photo, index) => (
               <div
                 key={photo.id}
@@ -212,7 +116,7 @@ const PhotoGallerySection = ({ currentLang }: PhotoGallerySectionProps) => {
         >
           <button
             onClick={handleCloseModal}
-            className="absolute top-4 right-4 z-10 w-12 h-12 bg-white/20 hover:bg-white/30 text-white rounded-full flex items-center justify-center transition-colors animate-glow"
+            className="absolute top-4 right-4 z-10 w-12 h-12 bg-white/20 hover:bg-white/30 text-white rounded-full flex items-center justify-center transition-colors"
             aria-label="Закрыть"
             tabIndex={0}
           >
@@ -221,7 +125,7 @@ const PhotoGallerySection = ({ currentLang }: PhotoGallerySectionProps) => {
             </svg>
           </button>
           <div
-            className="relative max-w-6xl max-h-[90vh] animate-bounce-in"
+            className="relative max-w-6xl max-h-[90vh] animate-fade-in"
             onClick={(e) => e.stopPropagation()}
           >
             <Image

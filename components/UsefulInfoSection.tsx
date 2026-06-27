@@ -143,20 +143,22 @@ const UsefulInfoSection = ({ currentLang }: UsefulInfoSectionProps) => {
   ]
 
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative pb-3 inline-block">
-          {t.sections.usefulInfo}
-          <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <div className="accent-line mb-3" />
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-800">
+            {t.sections.usefulInfo}
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {infoItems.map((item, index) => (
             <a
               key={item.id}
               href={item.href}
               target={item.href.startsWith('http') ? '_blank' : undefined}
               rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              className="bg-primary-50 rounded-lg p-6 card-hover border-2 border-transparent hover:border-primary-300"
+              className="bg-sage-100 rounded-xl p-6 card-hover border border-sage-300 hover:border-primary-300"
               style={{
                 animationDelay: `${index * 0.1}s`,
               }}

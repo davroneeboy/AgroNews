@@ -1,6 +1,8 @@
 'use client'
 
+import TopBar from '@/components/TopBar'
 import Header from '@/components/Header'
+import HeroSection from '@/components/HeroSection'
 import NewsSection from '@/components/NewsSection'
 import VideoReportsSection from '@/components/VideoReportsSection'
 import TelegramPostsSection from '@/components/TelegramPostsSection'
@@ -13,6 +15,7 @@ import PhotoGallerySection from '@/components/PhotoGallerySection'
 import MainDirectionsSection from '@/components/MainDirectionsSection'
 import Footer from '@/components/Footer'
 import FloatingButtons from '@/components/FloatingButtons'
+import ScrollReveal from '@/components/ScrollReveal'
 import { useLanguage } from '@/lib/useLanguage'
 
 export default function Home() {
@@ -20,20 +23,49 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
+      <TopBar />
       <Header />
+      <HeroSection currentLang={currentLang} />
       <StatisticsSection currentLang={currentLang} />
-      <InteractiveMap currentLang={currentLang} />
-      <NewsSection currentLang={currentLang} />
-      <VideoReportsSection currentLang={currentLang} />
-      <TelegramPostsSection currentLang={currentLang} />
-      <AnalyticsSection currentLang={currentLang} />
-      <MainDirectionsSection currentLang={currentLang} />
-      <PhotoGallerySection currentLang={currentLang} />
-      <AdviceSection currentLang={currentLang} />
-      <UsefulInfoSection currentLang={currentLang} />
+
+      <ScrollReveal direction="up">
+        <MainDirectionsSection currentLang={currentLang} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up">
+        <NewsSection currentLang={currentLang} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up">
+        <VideoReportsSection currentLang={currentLang} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up">
+        <TelegramPostsSection currentLang={currentLang} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up">
+        <InteractiveMap currentLang={currentLang} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up">
+        <AnalyticsSection currentLang={currentLang} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up">
+        <PhotoGallerySection currentLang={currentLang} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up">
+        <AdviceSection currentLang={currentLang} />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up">
+        <UsefulInfoSection currentLang={currentLang} />
+      </ScrollReveal>
+
       <Footer currentLang={currentLang} />
       <FloatingButtons />
     </main>
   )
 }
-

@@ -13,14 +13,12 @@ type PageHeaderProps = {
   backgroundImage?: string
 }
 
-const PageHeader = ({ currentLang, title, backgroundImage = 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1920&h=600&fit=crop' }: PageHeaderProps) => {
-  // Получаем текст заголовка в зависимости от типа
+const PageHeader = ({ currentLang, title, backgroundImage = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1920&h=600&fit=crop' }: PageHeaderProps) => {
   const titleText = typeof title === 'string' ? title : title[currentLang]
   const titleAlt = typeof title === 'string' ? title : title[currentLang]
 
   return (
-    <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
-      {/* Фоновое изображение */}
+    <div className="relative w-full h-[250px] md:h-[320px] lg:h-[400px] overflow-hidden">
       <div className="absolute inset-0">
         <Image
           src={backgroundImage}
@@ -30,13 +28,13 @@ const PageHeader = ({ currentLang, title, backgroundImage = 'https://images.unsp
           priority
           quality={90}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-900/80 via-primary-800/70 to-primary-900/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-950/90 via-primary-900/70 to-primary-900/50" />
       </div>
 
-      {/* Контент */}
-      <div className="relative z-10 h-full flex items-center justify-center">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white uppercase tracking-wide drop-shadow-2xl px-4">
+      <div className="relative z-10 h-full flex items-end pb-10 md:pb-14">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="accent-line-wide mb-4" />
+          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white uppercase tracking-wide">
             {titleText}
           </h1>
         </div>
@@ -46,4 +44,3 @@ const PageHeader = ({ currentLang, title, backgroundImage = 'https://images.unsp
 }
 
 export default PageHeader
-

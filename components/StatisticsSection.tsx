@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import { Language, getTranslation } from '@/lib/i18n'
 
 type StatisticsSectionProps = {
@@ -7,121 +8,88 @@ type StatisticsSectionProps = {
 }
 
 type StatItem = {
-  id: number
-  value: string
-  label: {
-    uz: string
-    ru: string
-    en: string
-  }
-  icon: JSX.Element
-  trend?: 'up' | 'down' | 'stable'
+  value: number
+  suffix: string
+  prefix?: string
+  label: { uz: string; ru: string; en: string }
+}
+
+function useCountUp(end: number, isVisible: boolean, duration = 2000) {
+  const [count, setCount] = useState(0)
+  const frameRef = useRef<number>(0)
+
+  useEffect(() => {
+    if (!isVisible) return
+    const startTime = performance.now()
+    const step = (t: number) => {
+      const p = Math.min((t - startTime) / duration, 1)
+      const eased = 1 - Math.pow(1 - p, 3)
+      setCount(Math.floor(eased * end))
+      if (p < 1) frameRef.current = requestAnimationFrame(step)
+      else setCount(end)
+    }
+    frameRef.current = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(frameRef.current)
+  }, [isVisible, end, duration])
+
+  return count
 }
 
 const StatisticsSection = ({ currentLang }: StatisticsSectionProps) => {
   const t = getTranslation(currentLang)
+  const ref = useRef<HTMLElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
 
-  const statistics: StatItem[] = [
-    {
-      id: 1,
-      value: '2,450',
-      label: {
-        uz: 'Fermer xo\'jaliklari',
-        ru: 'Фермерских хозяйств',
-        en: 'Farms',
-      },
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-        </svg>
-      ),
-      trend: 'up',
-    },
-    {
-      id: 2,
-      value: '125,000',
-      label: {
-        uz: 'Gektar yer maydoni',
-        ru: 'Гектаров земли',
-        en: 'Hectares of land',
-      },
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-        </svg>
-      ),
-      trend: 'up',
-    },
-    {
-      id: 3,
-      value: '850,000',
-      label: {
-        uz: 'Tonna mahsulot',
-        ru: 'Тонн продукции',
-        en: 'Tons of products',
-      },
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-        </svg>
-      ),
-      trend: 'up',
-    },
-    {
-      id: 4,
-      value: '15,000+',
-      label: {
-        uz: 'Ishchi o\'rinlari',
-        ru: 'Рабочих мест',
-        en: 'Jobs created',
-      },
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      ),
-      trend: 'up',
-    },
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect() } },
+      { threshold: 0.2 }
+    )
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [])
+
+  const stats: StatItem[] = [
+    { value: 1240, suffix: '', label: { uz: 'Faol loyihalar', ru: 'Активных проектов', en: 'Active projects' } },
+    { value: 86500, suffix: '+', label: { uz: 'Fermer xo\'jaliklari', ru: 'Фермерских хозяйств', en: 'Farms' } },
+    { value: 4, suffix: '', prefix: '$', label: { uz: 'mlrd investitsiya', ru: 'млрд инвестиций', en: 'bln investments' } },
+    { value: 14, suffix: '', label: { uz: 'Qamralgan hududlar', ru: 'Охваченных регионов', en: 'Regions covered' } },
   ]
 
   return (
-    <section className="py-20 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-center mb-12">
-          <h2 className="text-4xl font-bold relative inline-block pb-3">
-            {t.sections.statistics}
-            <span className="absolute bottom-0 left-0 right-0 w-full h-1 rounded-full bg-white/60" />
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {statistics.map((stat, index) => (
+    <section ref={ref} className="bg-paper-2 py-12 px-4 sm:px-8 lg:px-16">
+      <div className="container mx-auto grid grid-cols-2 lg:grid-cols-4">
+        {stats.map((stat, i) => {
+          const count = isVisible ? stat.value : 0
+
+          return (
             <div
-              key={stat.id}
-              className="bg-white/15 backdrop-blur-md rounded-xl p-6 text-center card-hover border border-white/10 shadow-landing-lg"
+              key={i}
+              className={`py-2 px-4 md:px-7 ${i > 0 ? 'border-l border-line' : ''}`}
               style={{
-                animationDelay: `${index * 0.1}s`,
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(12px)',
+                transition: `all 0.6s ease-out ${i * 100}ms`,
               }}
             >
-              <div className="text-primary-200 mb-4 flex justify-center">
-                {stat.icon}
+              <div className="font-display text-3xl md:text-[44px] font-semibold text-green-800">
+                {stat.prefix || ''}<CountDisplay value={stat.value} isVisible={isVisible} />{stat.suffix}
               </div>
-              <div className="text-4xl font-bold mb-2">{stat.value}</div>
-              <div className="text-primary-100 text-sm">{stat.label[currentLang]}</div>
-              {stat.trend === 'up' && (
-                <div className="mt-4 flex items-center justify-center text-green-300">
-                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                  </svg>
-                  <span className="text-xs">+12%</span>
-                </div>
-              )}
+              <div className="text-[14px] tracking-wider uppercase text-muted mt-1">
+                {stat.label[currentLang]}
+              </div>
             </div>
-          ))}
-        </div>
+          )
+        })}
       </div>
     </section>
   )
 }
 
-export default StatisticsSection
+function CountDisplay({ value, isVisible }: { value: number; isVisible: boolean }) {
+  const count = useCountUp(value, isVisible)
+  if (value < 10) return <>{isVisible ? value : 0}</>
+  return <>{count.toLocaleString('en-US').replace(/,/g, ' ')}</>
+}
 
+export default StatisticsSection

@@ -264,216 +264,104 @@ const InteractiveMap = ({ currentLang }: InteractiveMapProps) => {
   }
 
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-gray-900 mb-12 relative pb-3 inline-block">
-          {currentLang === 'uz' && 'Hududiy statistika'}
-          {currentLang === 'ru' && 'Региональная статистика'}
-          {currentLang === 'en' && 'Regional Statistics'}
-          <span className="absolute bottom-0 left-0 w-20 h-1 rounded-full bg-primary-500" />
-        </h2>
+    <section className="bg-green-800 py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-end mb-10">
+          <div>
+            <div className="eyebrow !text-lime mb-3">
+              {currentLang === 'uz' ? "Interaktiv xarita" : currentLang === 'ru' ? 'Интерактивная карта' : 'Interactive map'}
+            </div>
+            <h2 className="section-title !text-white text-3xl md:text-4xl">
+              {currentLang === 'uz' && 'Hududiy statistika'}
+              {currentLang === 'ru' && 'Региональная статистика'}
+              {currentLang === 'en' && 'Regional Statistics'}
+            </h2>
+          </div>
+          <span className="text-lime text-sm font-semibold hidden md:block">
+            {currentLang === 'uz' ? 'Barcha hududlar' : currentLang === 'ru' ? 'Все регионы' : 'All regions'}
+          </span>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Карта */}
-          <div className="lg:col-span-2 bg-earth-50 rounded-xl p-6 relative overflow-hidden border border-gray-100 shadow-landing">
+          <div className="lg:col-span-2 card-dark rounded-2xl p-5 relative overflow-hidden">
             <svg
               viewBox="0 0 1000 652"
               className="w-full h-auto"
-              style={{ maxHeight: '600px' }}
+              style={{ maxHeight: '550px' }}
               preserveAspectRatio="xMidYMid meet"
             >
-              {/* Фон карты */}
-              <rect
-                width="1600"
-                height="1050"
-                fill="#f0fdf4"
-                className="transition-colors duration-300"
-              />
-
-              {/* Регионы */}
-              {regions.map((region) => (
-                <g key={region.id}>
-                  <path
-                    d={region.path}
-                    fill={
-                      hoveredRegion === region.id || selectedRegion === region.id
-                        ? '#16a34a'
-                        : '#4ade80'
-                    }
-                    stroke="#15803d"
-                    strokeWidth="2.5"
-                    className="cursor-pointer transition-all duration-300 hover:fill-primary-600"
-                    onMouseEnter={() => setHoveredRegion(region.id)}
-                    onMouseLeave={() => setHoveredRegion(null)}
-                    onClick={() => handleRegionClick(region.id)}
-                    style={{
-                      filter:
-                        hoveredRegion === region.id || selectedRegion === region.id
-                          ? 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))'
-                          : 'none',
-                      transform:
-                        hoveredRegion === region.id || selectedRegion === region.id
-                          ? 'scale(1.03)'
-                          : 'scale(1)',
-                      transformOrigin: `${region.center.x}px ${region.center.y}px`,
-                    }}
-                  />
-                  {/* Название региона на карте */}
-                  <text
-                    x={region.center.x}
-                    y={region.center.y}
-                    textAnchor="middle"
-                    className="text-xs font-semibold fill-gray-800 pointer-events-none"
-                    style={{ fontSize: '11px' }}
-                  >
-                    {region.name[currentLang].split(' ')[0]}
-                  </text>
-                </g>
-              ))}
+              <rect width="1600" height="1050" fill="transparent" />
+              {regions.map((region) => {
+                const isActive = hoveredRegion === region.id || selectedRegion === region.id
+                return (
+                  <g key={region.id}>
+                    <path
+                      d={region.path}
+                      fill={isActive ? '#84cc16' : '#2e8b57'}
+                      stroke={isActive ? '#65a30d' : '#1b6b3a'}
+                      strokeWidth="2"
+                      className="cursor-pointer transition-all duration-300"
+                      onMouseEnter={() => setHoveredRegion(region.id)}
+                      onMouseLeave={() => setHoveredRegion(null)}
+                      onClick={() => handleRegionClick(region.id)}
+                      style={{
+                        filter: isActive ? 'drop-shadow(0 0 12px rgba(132,204,22,0.4))' : 'none',
+                        transform: isActive ? 'scale(1.02)' : 'scale(1)',
+                        transformOrigin: `${region.center.x}px ${region.center.y}px`,
+                      }}
+                    />
+                    <text
+                      x={region.center.x}
+                      y={region.center.y}
+                      textAnchor="middle"
+                      className="pointer-events-none"
+                      style={{ fontSize: '10px', fill: isActive ? '#0c3a1f' : 'rgba(255,255,255,0.7)', fontWeight: 600 }}
+                    >
+                      {region.name[currentLang].split(' ')[0]}
+                    </text>
+                  </g>
+                )
+              })}
             </svg>
 
-            {/* Инструкция */}
-            <div className="absolute bottom-4 left-4 text-sm text-gray-600 bg-white/90 px-3 py-2 rounded-lg shadow-md">
-              {currentLang === 'uz' && 'Hover qiling yoki bosing'}
-              {currentLang === 'ru' && 'Наведите курсор или нажмите'}
-              {currentLang === 'en' && 'Hover or click'}
+            <div className="absolute bottom-4 left-4 text-xs text-white/40 font-mono tracking-wide">
+              {currentLang === 'uz' && 'Hududni tanlang →'}
+              {currentLang === 'ru' && 'Выберите регион →'}
+              {currentLang === 'en' && 'Select region →'}
             </div>
           </div>
 
           {/* Панель статистики */}
           <div className="lg:col-span-1">
             {regionData ? (
-              <div className="bg-white rounded-lg shadow-lg p-6 border-2 border-primary-600 animate-fade-in">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <div className="card-dark rounded-2xl p-6 animate-fade-in !border-lime/30">
+                <h3 className="text-xl font-bold text-white mb-5 pb-4 border-b border-white/10">
                   {regionData.name[currentLang]}
                 </h3>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 bg-primary-50 rounded-lg">
-                    <div className="flex items-center">
-                      <svg
-                        className="w-6 h-6 text-primary-600 mr-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                        />
-                      </svg>
-                      <span className="text-gray-700 font-medium">
-                        {currentLang === 'uz' && 'Fermer xo\'jaliklari'}
-                        {currentLang === 'ru' && 'Фермерских хозяйств'}
-                        {currentLang === 'en' && 'Farms'}
-                      </span>
+                  {[
+                    { label: { uz: 'Fermer xo\'jaliklari', ru: 'Фермерских хозяйств', en: 'Farms' }, value: regionData.stats.farms },
+                    { label: { uz: 'Gektar maydoni', ru: 'Гектаров', en: 'Hectares' }, value: regionData.stats.hectares },
+                    { label: { uz: 'Tonna mahsulot', ru: 'Тонн продукции', en: 'Tons' }, value: regionData.stats.production },
+                    { label: { uz: 'Ish o\'rinlari', ru: 'Рабочих мест', en: 'Jobs' }, value: regionData.stats.employment },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
+                      <span className="text-white/50 text-sm">{item.label[currentLang]}</span>
+                      <span className="font-display text-2xl font-semibold text-white">{item.value.toLocaleString('en-US').replace(/,/g, ' ')}</span>
                     </div>
-                    <span className="text-2xl font-bold text-primary-600">
-                      {regionData.stats.farms}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-primary-50 rounded-lg">
-                    <div className="flex items-center">
-                      <svg
-                        className="w-6 h-6 text-primary-600 mr-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                        />
-                      </svg>
-                      <span className="text-gray-700 font-medium">
-                        {currentLang === 'uz' && 'Gektar'}
-                        {currentLang === 'ru' && 'Гектаров'}
-                        {currentLang === 'en' && 'Hectares'}
-                      </span>
-                    </div>
-                    <span className="text-2xl font-bold text-primary-600">
-                      {regionData.stats.hectares.toLocaleString()}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-primary-50 rounded-lg">
-                    <div className="flex items-center">
-                      <svg
-                        className="w-6 h-6 text-primary-600 mr-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                        />
-                      </svg>
-                      <span className="text-gray-700 font-medium">
-                        {currentLang === 'uz' && 'Tonna mahsulot'}
-                        {currentLang === 'ru' && 'Тонн продукции'}
-                        {currentLang === 'en' && 'Tons of products'}
-                      </span>
-                    </div>
-                    <span className="text-2xl font-bold text-primary-600">
-                      {regionData.stats.production.toLocaleString()}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-primary-50 rounded-lg">
-                    <div className="flex items-center">
-                      <svg
-                        className="w-6 h-6 text-primary-600 mr-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                        />
-                      </svg>
-                      <span className="text-gray-700 font-medium">
-                        {currentLang === 'uz' && 'Ishchi o\'rinlari'}
-                        {currentLang === 'ru' && 'Рабочих мест'}
-                        {currentLang === 'en' && 'Jobs'}
-                      </span>
-                    </div>
-                    <span className="text-2xl font-bold text-primary-600">
-                      {regionData.stats.employment.toLocaleString()}
-                    </span>
-                  </div>
+                  ))}
                 </div>
               </div>
             ) : (
-              <div className="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300 text-center">
-                <svg
-                  className="w-16 h-16 text-gray-400 mx-auto mb-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
+              <div className="card-dark rounded-2xl p-8 text-center flex flex-col items-center justify-center h-full min-h-[300px]">
+                <svg className="w-12 h-12 text-white/20 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <p className="text-gray-500">
-                  {currentLang === 'uz' &&
-                    'Hududni tanlang yoki ustiga kursor qo\'ying'}
-                  {currentLang === 'ru' &&
-                    'Выберите регион или наведите курсор'}
-                  {currentLang === 'en' && 'Select a region or hover over it'}
+                <p className="text-white/30 text-sm">
+                  {currentLang === 'uz' && 'Hududni tanlang'}
+                  {currentLang === 'ru' && 'Выберите регион'}
+                  {currentLang === 'en' && 'Select a region'}
                 </p>
               </div>
             )}
