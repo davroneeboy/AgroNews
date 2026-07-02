@@ -9,20 +9,12 @@ export function useLanguage() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   
-  // Синхронно читаем язык из URL для одинакового начального состояния на сервере и клиенте
+  // Синхронно читаем язык только из URL — localStorage недоступен на сервере,
+  // чтение его здесь на клиенте до гидратации даёт расхождение с SSR-рендером
   const initialLang = useMemo(() => {
     const langParam = searchParams.get('lang') as Language | null
     if (langParam && ['uz', 'ru', 'en'].includes(langParam)) {
       return langParam
-    }
-    // На сервере localStorage недоступен, поэтому всегда возвращаем 'uz'
-    if (typeof window === 'undefined') {
-      return 'uz'
-    }
-    // На клиенте проверяем localStorage
-    const savedLang = localStorage.getItem('language') as Language | null
-    if (savedLang && ['uz', 'ru', 'en'].includes(savedLang)) {
-      return savedLang
     }
     return 'uz'
   }, [searchParams])
