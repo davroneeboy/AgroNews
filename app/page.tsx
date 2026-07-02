@@ -1,6 +1,5 @@
 'use client'
 
-import TopBar from '@/components/TopBar'
 import Header from '@/components/Header'
 import HeroSection from '@/components/HeroSection'
 import NewsSection from '@/components/NewsSection'
@@ -23,7 +22,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      <TopBar />
       <Header />
       <HeroSection currentLang={currentLang} />
       <StatisticsSection currentLang={currentLang} />
