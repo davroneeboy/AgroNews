@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { Language, getTranslation } from '@/lib/i18n'
 import { useLanguage } from '@/lib/useLanguage'
 import { addLangToUrl } from '@/lib/urlUtils'
@@ -22,6 +22,7 @@ type MenuItem = {
 }
 
 const Header = () => {
+  const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const { currentLang, setCurrentLang } = useLanguage()
@@ -30,6 +31,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null)
 
   const t = getTranslation(currentLang)
 
@@ -177,6 +179,12 @@ const Header = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (activeDropdown) {
+        // На мобильных клики происходят внутри mobileMenuRef, а не внутри
+        // desktop-дропдауна (dropdownRefs) — исключаем его из проверки,
+        // иначе mousedown закрывает mobile-подменю раньше, чем click дойдёт до ссылки.
+        if (mobileMenuRef.current && mobileMenuRef.current.contains(event.target as Node)) {
+          return
+        }
         const dropdownElement = dropdownRefs.current[activeDropdown]
         if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
           setActiveDropdown(null)
@@ -423,7 +431,9 @@ const Header = () => {
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div className={`lg:hidden py-3 border-t max-h-[calc(100vh-200px)] overflow-y-auto ${
+          <div
+            ref={mobileMenuRef}
+            className={`lg:hidden py-3 border-t max-h-[calc(100vh-200px)] overflow-y-auto ${
             'bg-white'
           }`}>
             {/* Mobile language + social */}
@@ -471,18 +481,20 @@ const Header = () => {
                       </svg>
                     </button>
                   ) : (
-                    <Link
-                      href={addLangToUrl(item.href, currentLang)}
+                    <button
                       className={`w-full text-left px-3 py-2.5 rounded-md transition-colors text-sm font-semibold uppercase tracking-wide block ${
 'text-ink hover:bg-paper-2'
                       }`}
                       onClick={() => {
+                        const target = addLangToUrl(item.href, currentLang)
                         setActiveDropdown(null)
                         setIsMobileMenuOpen(false)
+                        router.push(target)
                       }}
+                      tabIndex={0}
                     >
                       {item.label}
-                    </Link>
+                    </button>
                   )}
                   {item.dropdown && activeDropdown === item.label && (
                     <div className={`mt-1 ml-3 rounded-md py-1 ${
@@ -506,19 +518,21 @@ const Header = () => {
                             {dropdownItem.label}
                           </a>
                         ) : (
-                          <Link
+                          <button
                             key={dropdownItem.label}
-                            href={addLangToUrl(dropdownItem.href, currentLang)}
-                            className={`block px-4 py-2 rounded transition-colors text-sm ${
+                            className={`block w-full text-left px-4 py-2 rounded transition-colors text-sm ${
 'text-ink/80 hover:text-green-700 hover:bg-paper-2'
                             }`}
                             onClick={() => {
+                              const target = addLangToUrl(dropdownItem.href, currentLang)
                               setActiveDropdown(null)
                               setIsMobileMenuOpen(false)
+                              router.push(target)
                             }}
+                            tabIndex={0}
                           >
                             {dropdownItem.label}
-                          </Link>
+                          </button>
                         )
                       ))}
                     </div>
