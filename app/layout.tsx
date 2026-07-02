@@ -21,7 +21,7 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: 'Агентство по развитию агропромышленности при Министерстве сельского хозяйства',
+  title: 'Agrosanoatni rivojlantirish agentligi',
   description: 'Официальный сайт агентства по развитию агропромышленности при Министерстве сельского хозяйства',
   icons: {
     icon: '/icon.png',
