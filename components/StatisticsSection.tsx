@@ -50,9 +50,9 @@ const StatisticsSection = ({ currentLang }: StatisticsSectionProps) => {
   }, [])
 
   const stats: StatItem[] = [
-    { value: 1240, suffix: '', label: { uz: 'Faol loyihalar', ru: 'Активных проектов', en: 'Active projects' } },
-    { value: 86500, suffix: '+', label: { uz: 'Fermer xo\'jaliklari', ru: 'Фермерских хозяйств', en: 'Farms' } },
-    { value: 4, suffix: '', prefix: '$', label: { uz: 'mlrd investitsiya', ru: 'млрд инвестиций', en: 'bln investments' } },
+    { value: 168000, suffix: ' ga', label: { uz: 'Bogʻ va uzumzorlar', ru: 'Садов и виноградников', en: 'Orchards and vineyards' } },
+    { value: 395559, suffix: '', label: { uz: 'Fermer xo\'jaliklari', ru: 'Фермерских хозяйств', en: 'Farms' } },
+    { value: 2, suffix: '', prefix: '$', label: { uz: 'mlrd investitsiya', ru: 'млрд инвестиций', en: 'bln investments' } },
     { value: 14, suffix: '', label: { uz: 'Qamralgan hududlar', ru: 'Охваченных регионов', en: 'Regions covered' } },
   ]
 
