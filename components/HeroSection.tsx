@@ -8,13 +8,26 @@ type HeroSectionProps = {
   currentLang: Language
 }
 
+const galleryPhotos = [
+  '/gallery/ChatGPT Image 26 июн. 2026 г., 19_39_57.png',
+  '/gallery/ChatGPT Image 27 июн. 2026 г., 12_16_09.png',
+]
+
 const HeroSection = ({ currentLang }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false)
+  const [slideIndex, setSlideIndex] = useState(0)
   const t = getTranslation(currentLang)
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100)
     return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSlideIndex((i) => (i + 1) % galleryPhotos.length)
+    }, 4000)
+    return () => clearInterval(interval)
   }, [])
 
   const heroContent = {
@@ -43,11 +56,6 @@ const HeroSection = ({ currentLang }: HeroSectionProps) => {
       ru: "Инвестиционные возможности",
       en: "Investment opportunities",
     },
-    badge: {
-      uz: "Rasmiy axborot · agro.gov.uz",
-      ru: "Официальная информация · agro.gov.uz",
-      en: "Official information · agro.gov.uz",
-    },
     cardLabel: {
       uz: "Hosildorlik 2026",
       ru: "Урожайность 2026",
@@ -63,7 +71,7 @@ const HeroSection = ({ currentLang }: HeroSectionProps) => {
   return (
     <section className="bg-paper px-4 sm:px-8 lg:px-16 pt-16 pb-10 md:pt-20 md:pb-14">
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-14 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-14 lg:items-stretch">
           {/* Text */}
           <div
             style={{
@@ -87,32 +95,30 @@ const HeroSection = ({ currentLang }: HeroSectionProps) => {
                 {heroContent.cta2[currentLang]}
               </a>
             </div>
-            <div className="pt-6 border-t border-line flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-paper-2 flex items-center justify-center text-gold text-sm">★</div>
-              <span className="text-sm text-muted">
-                {heroContent.badge[currentLang]}
-              </span>
-            </div>
           </div>
 
           {/* Visual card */}
           <div
-            className="relative"
+            className="relative h-full"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
               transition: 'all 0.8s ease-out 0.15s',
             }}
           >
-            <div className="aspect-[4/3.4] rounded-2xl bg-gradient-to-br from-green-700 to-green-900 overflow-hidden relative flex items-end p-6">
-              <Image
-                src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1000&h=800&fit=crop"
-                alt="Agriculture"
-                fill
-                className="object-cover opacity-40"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-green-900/30 to-transparent" />
+            <div className="h-full min-h-[620px] rounded-2xl bg-gradient-to-br from-green-700 to-green-900 overflow-hidden relative flex items-end p-6">
+              {galleryPhotos.map((src, i) => (
+                <Image
+                  key={src}
+                  src={src}
+                  alt="Agriculture"
+                  fill
+                  className="object-cover opacity-70 transition-opacity duration-1000"
+                  style={{ opacity: i === slideIndex ? 0.7 : 0 }}
+                  priority={i === 0}
+                />
+              ))}
+              <div className="absolute inset-0 bg-gradient-to-t from-green-900/60 via-green-900/15 to-transparent" />
               <div className="relative text-white z-10">
                 <div className="font-mono text-sm font-semibold text-lime mb-1.5">{heroContent.cardLabel[currentLang]}</div>
                 <div className="font-display text-2xl md:text-3xl font-semibold">{heroContent.cardTitle[currentLang]}</div>
@@ -121,7 +127,7 @@ const HeroSection = ({ currentLang }: HeroSectionProps) => {
 
             {/* Floating stat card */}
             <div
-              className="absolute -bottom-6 -left-6 bg-white border border-line rounded-xl px-5 py-4 shadow-card-hover"
+              className="absolute -bottom-6 -left-28 bg-white border border-line rounded-xl px-5 py-4 shadow-card-hover"
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(16px)',
