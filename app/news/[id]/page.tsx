@@ -30,7 +30,7 @@ export default function NewsDetailPage() {
         if (isNaN(id)) {
           throw new Error('Неверный ID новости')
         }
-        const data = await getNewsById(id)
+        const data = await getNewsById(id, currentLang)
         setNews(data)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Ошибка загрузки новости')
@@ -42,7 +42,7 @@ export default function NewsDetailPage() {
     if (params.id) {
       fetchNews()
     }
-  }, [params.id])
+  }, [params.id, currentLang])
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)

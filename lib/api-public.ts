@@ -13,6 +13,121 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   console.log('📡 API URL:', API_BASE_URL)
 }
 
+// Новости берутся напрямую с портала gov.uz (Агентство по развитию агропромышленности)
+const GOV_UZ_API_URL = 'https://api-portal.gov.uz'
+const GOV_UZ_AUTHORITY_CODE = 'agrosanoat'
+
+type GovUzLanguage = 'oz' | 'ru' | 'en'
+
+function toGovUzLanguage(lang?: string): GovUzLanguage {
+  if (lang === 'ru' || lang === 'en') return lang
+  return 'oz'
+}
+
+type GovUzNewsListItem = {
+  id: number
+  date: string
+  title: string
+  anons: string
+  views: number
+  anons_image: string
+}
+
+type GovUzNewsListResponse = {
+  data: GovUzNewsListItem[]
+  total_page: number
+  current_page: number
+}
+
+type GovUzNewsDetail = {
+  id: number
+  date: string
+  updated_date: string
+  title: string
+  anons: string
+  body: string
+  views: number
+  anons_image: string
+  body_image: string
+}
+
+type GovUzNewsDetailResponse = {
+  data: GovUzNewsDetail
+}
+
+function govUzListItemToNews(item: GovUzNewsListItem): News {
+  return {
+    id: item.id,
+    title: item.title,
+    slug: String(item.id),
+    thumb: item.anons_image,
+    short_description: item.anons,
+    description: item.anons,
+    status: 'published',
+    status_display: 'published',
+    views_count: item.views,
+    images: [],
+    is_active: true,
+    created_at: item.date,
+    updated_at: item.date,
+  }
+}
+
+function govUzDetailToNews(item: GovUzNewsDetail): News {
+  return {
+    id: item.id,
+    title: item.title,
+    slug: String(item.id),
+    thumb: item.anons_image || item.body_image,
+    short_description: item.anons,
+    description: item.body,
+    status: 'published',
+    status_display: 'published',
+    views_count: item.views,
+    images: [],
+    is_active: true,
+    created_at: item.date,
+    updated_at: item.updated_date || item.date,
+  }
+}
+
+async function fetchGovUzNewsList(page: number, lang?: string): Promise<PaginatedResponse<News>> {
+  const language = toGovUzLanguage(lang)
+  const res = await fetch(
+    `${GOV_UZ_API_URL}/authorities/news/category?code_name=news&page=${page}`,
+    { headers: { code: GOV_UZ_AUTHORITY_CODE, language } }
+  )
+
+  if (!res.ok) {
+    throw new Error(`Ошибка получения новостей: ${res.status} ${res.statusText}`)
+  }
+
+  const json: GovUzNewsListResponse = await res.json()
+
+  return {
+    count: json.data.length,
+    next: json.current_page < json.total_page ? String(json.current_page + 1) : null,
+    previous: json.current_page > 1 ? String(json.current_page - 1) : null,
+    results: json.data.map(govUzListItemToNews),
+    total_pages: json.total_page,
+  }
+}
+
+async function fetchGovUzNewsById(id: number, lang?: string): Promise<News> {
+  const language = toGovUzLanguage(lang)
+  const res = await fetch(
+    `${GOV_UZ_API_URL}/authorities/news/view?id=${id}`,
+    { headers: { code: GOV_UZ_AUTHORITY_CODE, language } }
+  )
+
+  if (!res.ok) {
+    throw new Error(`Ошибка получения новости: ${res.status} ${res.statusText}`)
+  }
+
+  const json: GovUzNewsDetailResponse = await res.json()
+  return govUzDetailToNews(json.data)
+}
+
 // Типы данных из OpenAPI
 export type News = {
   id: number
@@ -78,6 +193,7 @@ export type PaginatedResponse<T> = {
   next: string | null
   previous: string | null
   results: T[]
+  total_pages?: number
 }
 
 /**
@@ -85,59 +201,16 @@ export type PaginatedResponse<T> = {
  */
 export async function getNewsList(params?: {
   page?: number
-  search?: string
-  ordering?: string
-  created_after?: string
-  created_before?: string
-  min_views?: string
+  lang?: string
 }): Promise<PaginatedResponse<News>> {
-  const queryParams = new URLSearchParams()
-  
-  if (params?.page) queryParams.append('page', params.page.toString())
-  if (params?.search) queryParams.append('search', params.search)
-  if (params?.ordering) queryParams.append('ordering', params.ordering)
-  if (params?.created_after) queryParams.append('created_after', params.created_after)
-  if (params?.created_before) queryParams.append('created_before', params.created_before)
-  if (params?.min_views) queryParams.append('min_views', params.min_views)
-  
-  // Фильтруем только опубликованные и активные новости
-  queryParams.append('status', 'published')
-  queryParams.append('is_active', 'true')
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/news/?${queryParams.toString()}`)
-    
-    if (!response.ok) {
-      throw new Error(`Ошибка получения новостей: ${response.status} ${response.statusText}`)
-    }
-
-    return response.json()
-  } catch (error) {
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      throw new Error(`Не удалось подключиться к API серверу. Проверьте, что сервер запущен по адресу: ${API_BASE_URL}`)
-    }
-    throw error
-  }
+  return fetchGovUzNewsList(params?.page || 1, params?.lang)
 }
 
 /**
  * Получить новость по ID
  */
-export async function getNewsById(id: number): Promise<News> {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/news/${id}/`)
-    
-    if (!response.ok) {
-      throw new Error(`Ошибка получения новости: ${response.status} ${response.statusText}`)
-    }
-
-    return response.json()
-  } catch (error) {
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      throw new Error(`Не удалось подключиться к API серверу. Проверьте, что сервер запущен по адресу: ${API_BASE_URL}`)
-    }
-    throw error
-  }
+export async function getNewsById(id: number, lang?: string): Promise<News> {
+  return fetchGovUzNewsById(id, lang)
 }
 
 /**

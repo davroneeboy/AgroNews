@@ -30,10 +30,10 @@ export default function NewsPage() {
         setError(null)
         const response = await getNewsList({
           page,
-          ordering: '-created_at',
+          lang: currentLang,
         })
         setNews(response.results)
-        setTotalPages(Math.ceil(response.count / 10))
+        setTotalPages(response.total_pages || 1)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Ошибка загрузки новостей')
       } finally {
@@ -42,7 +42,7 @@ export default function NewsPage() {
     }
 
     fetchNews()
-  }, [page])
+  }, [page, currentLang])
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)

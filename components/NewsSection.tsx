@@ -68,7 +68,7 @@ const NewsSection = ({ currentLang }: NewsSectionProps) => {
       isFetchingRef.current = true
       try {
         setLoading(true)
-        const response = await getNewsList({ page: 1, ordering: '-created_at' })
+        const response = await getNewsList({ page: 1, lang: currentLang })
         const newsData = response.results.slice(0, 6)
         setNews(newsData.length > 0 ? newsData : fallbackNews)
       } catch (err) {
@@ -80,7 +80,7 @@ const NewsSection = ({ currentLang }: NewsSectionProps) => {
       }
     }
     fetchNews()
-  }, [])
+  }, [currentLang])
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
