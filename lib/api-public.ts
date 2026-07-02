@@ -24,6 +24,18 @@ function toGovUzLanguage(lang?: string): GovUzLanguage {
   return 'oz'
 }
 
+// Разделы "Axborot xizmati" на gov.uz — code_name взят из get-right-menu?menu_id=7256
+export const NEWS_CATEGORIES = [
+  { code: 'news', label: { uz: 'Yangiliklar', ru: 'Новости', en: 'News' } },
+  { code: 'release', label: { uz: 'Press-relizlar', ru: 'Пресс-релизы', en: 'Press releases' } },
+  { code: 'conference', label: { uz: 'Matbuot anjumanlari', ru: 'Пресс-конференции', en: 'Press conferences' } },
+  { code: 'meetings', label: { uz: 'Majlislar', ru: 'Заседания', en: 'Meetings' } },
+  { code: 'events', label: { uz: 'Voqealar taqvimi', ru: 'Календарь событий', en: 'Events calendar' } },
+  { code: 'speeches', label: { uz: 'Bayonotlar va nutqlar', ru: 'Заявления и выступления', en: 'Statements & speeches' } },
+] as const
+
+export type NewsCategoryCode = typeof NEWS_CATEGORIES[number]['code']
+
 type GovUzNewsListItem = {
   id: number
   date: string
@@ -91,10 +103,9 @@ function govUzDetailToNews(item: GovUzNewsDetail): News {
   }
 }
 
-async function fetchGovUzNewsList(page: number, lang?: string): Promise<PaginatedResponse<News>> {
-  const language = toGovUzLanguage(lang)
+async function fetchGovUzNewsListPage(page: number, language: GovUzLanguage, category: NewsCategoryCode): Promise<GovUzNewsListResponse> {
   const res = await fetch(
-    `${GOV_UZ_API_URL}/authorities/news/category?code_name=news&page=${page}`,
+    `${GOV_UZ_API_URL}/authorities/news/category?code_name=${category}&page=${page}`,
     { headers: { code: GOV_UZ_AUTHORITY_CODE, language } }
   )
 
@@ -102,7 +113,17 @@ async function fetchGovUzNewsList(page: number, lang?: string): Promise<Paginate
     throw new Error(`Ошибка получения новостей: ${res.status} ${res.statusText}`)
   }
 
-  const json: GovUzNewsListResponse = await res.json()
+  return res.json()
+}
+
+async function fetchGovUzNewsList(page: number, lang?: string, category: NewsCategoryCode = 'news'): Promise<PaginatedResponse<News>> {
+  const language = toGovUzLanguage(lang)
+  let json = await fetchGovUzNewsListPage(page, language, category)
+
+  // Контент на ru/en часто не заполнен на портале — откатываемся на узбекский, чтобы новости не пропадали
+  if (json.data.length === 0 && language !== 'oz') {
+    json = await fetchGovUzNewsListPage(page, 'oz', category)
+  }
 
   return {
     count: json.data.length,
@@ -113,8 +134,7 @@ async function fetchGovUzNewsList(page: number, lang?: string): Promise<Paginate
   }
 }
 
-async function fetchGovUzNewsById(id: number, lang?: string): Promise<News> {
-  const language = toGovUzLanguage(lang)
+async function fetchGovUzNewsByIdRaw(id: number, language: GovUzLanguage): Promise<GovUzNewsDetailResponse> {
   const res = await fetch(
     `${GOV_UZ_API_URL}/authorities/news/view?id=${id}`,
     { headers: { code: GOV_UZ_AUTHORITY_CODE, language } }
@@ -124,7 +144,18 @@ async function fetchGovUzNewsById(id: number, lang?: string): Promise<News> {
     throw new Error(`Ошибка получения новости: ${res.status} ${res.statusText}`)
   }
 
-  const json: GovUzNewsDetailResponse = await res.json()
+  return res.json()
+}
+
+async function fetchGovUzNewsById(id: number, lang?: string): Promise<News> {
+  const language = toGovUzLanguage(lang)
+  let json = await fetchGovUzNewsByIdRaw(id, language)
+
+  // Контент на ru/en часто не заполнен на портале — откатываемся на узбекский
+  if (!json.data?.title && language !== 'oz') {
+    json = await fetchGovUzNewsByIdRaw(id, 'oz')
+  }
+
   return govUzDetailToNews(json.data)
 }
 
@@ -202,8 +233,9 @@ export type PaginatedResponse<T> = {
 export async function getNewsList(params?: {
   page?: number
   lang?: string
+  category?: NewsCategoryCode
 }): Promise<PaginatedResponse<News>> {
-  return fetchGovUzNewsList(params?.page || 1, params?.lang)
+  return fetchGovUzNewsList(params?.page || 1, params?.lang, params?.category)
 }
 
 /**

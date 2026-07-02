@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -10,16 +10,35 @@ import PageHeader from '@/components/PageHeader'
 import ScrollReveal from '@/components/ScrollReveal'
 import { getTranslation } from '@/lib/i18n'
 import { useLanguage } from '@/lib/useLanguage'
-import { getNewsList, type News } from '@/lib/api-public'
+import { getNewsList, NEWS_CATEGORIES, type News, type NewsCategoryCode } from '@/lib/api-public'
 import Image from 'next/image'
 
+const CATEGORY_CODES = NEWS_CATEGORIES.map((c) => c.code)
+
+function isNewsCategoryCode(value: string | null): value is NewsCategoryCode {
+  return !!value && (CATEGORY_CODES as string[]).includes(value)
+}
+
 export default function NewsPage() {
+  return (
+    <Suspense fallback={null}>
+      <NewsPageContent />
+    </Suspense>
+  )
+}
+
+function NewsPageContent() {
   const { currentLang } = useLanguage()
+  const searchParams = useSearchParams()
   const [news, setNews] = useState<News[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const initialCategory = searchParams.get('category')
+  const [category, setCategory] = useState<NewsCategoryCode>(
+    isNewsCategoryCode(initialCategory) ? initialCategory : 'news'
+  )
   const router = useRouter()
   const t = getTranslation(currentLang)
 
@@ -31,6 +50,7 @@ export default function NewsPage() {
         const response = await getNewsList({
           page,
           lang: currentLang,
+          category,
         })
         setNews(response.results)
         setTotalPages(response.total_pages || 1)
@@ -42,7 +62,7 @@ export default function NewsPage() {
     }
 
     fetchNews()
-  }, [page, currentLang])
+  }, [page, currentLang, category])
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -69,6 +89,27 @@ export default function NewsPage() {
       {/* News List */}
       <section className="py-6 sm:py-8 md:py-12">
         <div className="container mx-auto px-4 sm:px-6">
+          {/* Category tabs */}
+          <div className="flex flex-wrap gap-2 mb-6 sm:mb-8">
+            {NEWS_CATEGORIES.map((cat) => (
+              <button
+                key={cat.code}
+                onClick={() => {
+                  setCategory(cat.code)
+                  setPage(1)
+                  router.replace(cat.code === 'news' ? '/news' : `/news?category=${cat.code}`, { scroll: false })
+                }}
+                className={`px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${
+                  category === cat.code
+                    ? 'bg-primary-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                }`}
+              >
+                {cat.label[currentLang]}
+              </button>
+            ))}
+          </div>
+
           {loading && (
             <div className="text-center py-12">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
