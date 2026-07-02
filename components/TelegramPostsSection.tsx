@@ -22,13 +22,15 @@ type PostItem = {
   author?: string | null
 }
 
-// Fallback данные на случай, если API недоступен
+// Fallback данные на случай, если API недоступен.
+// Дата фиксированная (не new Date()) — иначе SSR и клиент вычисляют её в разный момент
+// времени, что приводит к hydration mismatch в formatDate().
 const fallbackPosts: PostItem[] = [
   {
     id: '1',
     text: 'Добро пожаловать в наш Telegram канал! Здесь вы найдете последние новости и обновления.',
     thumbnail: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&h=600&fit=crop',
-    publishedAt: new Date().toISOString(),
+    publishedAt: '2026-01-01T00:00:00.000Z',
     url: 'https://t.me/example/1',
     hasMedia: false,
   },
