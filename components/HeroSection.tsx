@@ -11,6 +11,15 @@ type HeroSectionProps = {
 const galleryPhotos = [
   '/gallery/ChatGPT Image 26 июн. 2026 г., 19_39_57.png',
   '/gallery/ChatGPT Image 27 июн. 2026 г., 12_16_09.png',
+  '/gallery/ChatGPT Image 2 июл. 2026 г., 15_56_01.png',
+  '/gallery/ChatGPT Image 2 июл. 2026 г., 15_56_05.png',
+  '/gallery/ChatGPT Image 2 июл. 2026 г., 15_56_12.png',
+  '/gallery/ChatGPT Image 2 июл. 2026 г., 15_58_16.png',
+  '/gallery/ChatGPT Image 2 июл. 2026 г., 16_07_34.png',
+  '/gallery/ChatGPT Image 2 июл. 2026 г., 16_09_06.png',
+  '/gallery/ChatGPT Image 2 июл. 2026 г., 16_12_21.png',
+  '/gallery/ChatGPT Image 2 июл. 2026 г., 16_12_24.png',
+  '/gallery/ChatGPT Image 2 июл. 2026 г., 16_12_27.png',
 ]
 
 const HeroSection = ({ currentLang }: HeroSectionProps) => {
