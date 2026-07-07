@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import Header from '@/components/Header'
 import HeroSection from '@/components/HeroSection'
 import NewsSection from '@/components/NewsSection'
@@ -18,6 +19,14 @@ import ScrollReveal from '@/components/ScrollReveal'
 import { useLanguage } from '@/lib/useLanguage'
 
 export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
+  )
+}
+
+function HomeContent() {
   const { currentLang } = useLanguage()
 
   return (

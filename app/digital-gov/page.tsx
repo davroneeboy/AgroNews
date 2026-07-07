@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingButtons from '@/components/FloatingButtons'
@@ -11,6 +11,14 @@ import { useLanguage } from '@/lib/useLanguage'
 import { getDigitalGovList, type DigitalGov } from '@/lib/api-public'
 
 export default function DigitalGovPage() {
+  return (
+    <Suspense fallback={null}>
+      <DigitalGovPageContent />
+    </Suspense>
+  )
+}
+
+function DigitalGovPageContent() {
   const { currentLang } = useLanguage()
   const [data, setData] = useState<DigitalGov[]>([])
   const [loading, setLoading] = useState(true)

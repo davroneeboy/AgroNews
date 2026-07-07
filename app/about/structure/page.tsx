@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingButtons from '@/components/FloatingButtons'
@@ -30,6 +31,14 @@ interface DeputyDirector {
 }
 
 export default function StructurePage() {
+  return (
+    <Suspense fallback={null}>
+      <StructurePageContent />
+    </Suspense>
+  )
+}
+
+function StructurePageContent() {
   const { currentLang } = useLanguage()
   const t = getTranslation(currentLang)
 

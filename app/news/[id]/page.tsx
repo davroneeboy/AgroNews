@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Header from '@/components/Header'
@@ -13,6 +13,14 @@ import { getNewsById, type News } from '@/lib/api-public'
 import Image from 'next/image'
 
 export default function NewsDetailPage() {
+  return (
+    <Suspense fallback={null}>
+      <NewsDetailPageContent />
+    </Suspense>
+  )
+}
+
+function NewsDetailPageContent() {
   const params = useParams()
   const router = useRouter()
   const { currentLang } = useLanguage()

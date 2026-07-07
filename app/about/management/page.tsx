@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingButtons from '@/components/FloatingButtons'
@@ -107,6 +107,14 @@ const ManagerCard = ({ manager, index }: ManagerCardProps) => {
 }
 
 export default function ManagementPage() {
+  return (
+    <Suspense fallback={null}>
+      <ManagementPageContent />
+    </Suspense>
+  )
+}
+
+function ManagementPageContent() {
   const { currentLang } = useLanguage()
   const t = getTranslation(currentLang)
 

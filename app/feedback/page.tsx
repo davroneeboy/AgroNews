@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingButtons from '@/components/FloatingButtons'
@@ -10,6 +10,14 @@ import { useLanguage } from '@/lib/useLanguage'
 import Link from 'next/link'
 
 export default function FeedbackPage() {
+  return (
+    <Suspense fallback={null}>
+      <FeedbackPageContent />
+    </Suspense>
+  )
+}
+
+function FeedbackPageContent() {
   const { currentLang } = useLanguage()
   const [formData, setFormData] = useState({
     name: '',

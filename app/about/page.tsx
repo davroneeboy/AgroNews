@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingButtons from '@/components/FloatingButtons'
@@ -12,6 +12,14 @@ import { getAboutList, type About } from '@/lib/api-public'
 import Image from 'next/image'
 
 export default function AboutPage() {
+  return (
+    <Suspense fallback={null}>
+      <AboutPageContent />
+    </Suspense>
+  )
+}
+
+function AboutPageContent() {
   const { currentLang } = useLanguage()
   const [aboutData, setAboutData] = useState<About | null>(null)
   const [loading, setLoading] = useState(true)

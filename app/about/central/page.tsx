@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingButtons from '@/components/FloatingButtons'
@@ -9,6 +10,14 @@ import { useLanguage } from '@/lib/useLanguage'
 import Link from 'next/link'
 
 export default function CentralPage() {
+  return (
+    <Suspense fallback={null}>
+      <CentralPageContent />
+    </Suspense>
+  )
+}
+
+function CentralPageContent() {
   const { currentLang } = useLanguage()
   const t = getTranslation(currentLang)
 
