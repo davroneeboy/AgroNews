@@ -15,57 +15,57 @@ const PhotoGallerySection = ({ currentLang }: PhotoGallerySectionProps) => {
   const photos = [
     {
       id: 1,
-      url: '/gallery/ChatGPT Image 26 июн. 2026 г., 19_39_57.png',
+      url: '/gallery/gallery-01.png',
       title: { uz: 'Olma bog\'i', ru: 'Яблоневый сад', en: 'Apple orchard' },
     },
     {
       id: 2,
-      url: '/gallery/ChatGPT Image 27 июн. 2026 г., 12_16_09.png',
+      url: '/gallery/gallery-02.png',
       title: { uz: 'Zamonaviy issiqxona', ru: 'Современная теплица', en: 'Modern greenhouse' },
     },
     {
       id: 3,
-      url: '/gallery/ChatGPT Image 2 июл. 2026 г., 15_56_01.png',
+      url: '/gallery/gallery-03.png',
       title: { uz: 'Uzum hosilini yig\'ish', ru: 'Сбор урожая винограда', en: 'Grape harvest' },
     },
     {
       id: 4,
-      url: '/gallery/ChatGPT Image 2 июл. 2026 г., 15_56_05.png',
+      url: '/gallery/gallery-04.png',
       title: { uz: 'Qishloq xo\'jaligi maydonlari yuqoridan', ru: 'Сельхозугодья с высоты', en: 'Farmland from above' },
     },
     {
       id: 5,
-      url: '/gallery/ChatGPT Image 2 июл. 2026 г., 15_56_12.png',
+      url: '/gallery/gallery-05.png',
       title: { uz: 'Olma bog\'idagi hosil', ru: 'Урожай в яблоневом саду', en: 'Apple orchard harvest' },
     },
     {
       id: 6,
-      url: '/gallery/ChatGPT Image 2 июл. 2026 г., 15_58_16.png',
+      url: '/gallery/gallery-06.png',
       title: { uz: 'Yashil o\'tloqlar', ru: 'Зелёные угодья с высоты', en: 'Green farmland from above' },
     },
     {
       id: 7,
-      url: '/gallery/ChatGPT Image 2 июл. 2026 г., 16_07_34.png',
+      url: '/gallery/gallery-07.png',
       title: { uz: 'Uzumzor tepaliklar', ru: 'Виноградники на холмах', en: 'Hillside vineyards' },
     },
     {
       id: 8,
-      url: '/gallery/ChatGPT Image 2 июл. 2026 г., 16_09_06.png',
+      url: '/gallery/gallery-08.png',
       title: { uz: 'Aniq dehqonchilik texnologiyalari', ru: 'Точное земледелие и дроны', en: 'Precision farming and drones' },
     },
     {
       id: 9,
-      url: '/gallery/ChatGPT Image 2 июл. 2026 г., 16_12_21.png',
+      url: '/gallery/gallery-09.png',
       title: { uz: 'Eksportga tayyorlangan mahsulot', ru: 'Продукция готовая к экспорту', en: 'Produce ready for export' },
     },
     {
       id: 10,
-      url: '/gallery/ChatGPT Image 2 июл. 2026 г., 16_12_24.png',
+      url: '/gallery/gallery-10.png',
       title: { uz: 'Farg\'ona vodiysi manzarasi', ru: 'Панорама Ферганской долины', en: 'Fergana Valley panorama' },
     },
     {
       id: 11,
-      url: '/gallery/ChatGPT Image 2 июл. 2026 г., 16_12_27.png',
+      url: '/gallery/gallery-11.png',
       title: { uz: 'Tomchilatib sug\'orish', ru: 'Капельное орошение', en: 'Drip irrigation' },
     },
   ]
